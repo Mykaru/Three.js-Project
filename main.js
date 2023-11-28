@@ -1,5 +1,6 @@
 		import * as THREE from 'three';
 		import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+		import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 		
 
 		let camera, scene, renderer;
@@ -36,7 +37,7 @@ scene.add(directionalLight);
 // Set blue background color
 scene.background = new THREE.Color('#BFE6FA');
 
-const loader = new THREE.GLTFLoader();
+const loader = new GLTFLoader();
 
 // Load the glTF model
 loader.load(
@@ -57,10 +58,7 @@ loader.load(
 // Render function
 const animate = function () {
 	requestAnimationFrame(animate);
-  
-	// Rotate cube
-	// cube.rotation.x += 0.01;
-	// cube.rotation.y += 0.01;
+
   
 	controls.update(); // Update controls
   

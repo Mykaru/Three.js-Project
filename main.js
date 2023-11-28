@@ -67,24 +67,7 @@
 
 			// meshes
 
-			const boxMaterial = new THREE.MeshPhongMaterial( { map: texChecker2 } );
-
-			function addBox( boxSideLength, x, z, rotation ) {
-
-				const mesh = new THREE.Mesh( new THREE.BoxGeometry( boxSideLength, boxSideLength, boxSideLength ), boxMaterial );
-				mesh.castShadow = true;
-				mesh.receiveShadow = true;
-				mesh.rotation.y = rotation;
-				mesh.position.y = boxSideLength / 2;
-				mesh.position.set( x, boxSideLength / 2 + .0001, z );
-				scene.add( mesh );
-				return mesh;
-
-			}
-
-			addBox( .4, 0, 0, Math.PI / 4 );
-			addBox( .5, - .5, - .5, Math.PI / 4 );
-
+			
 			const planeSideLength = 2;
 			const planeMesh = new THREE.Mesh(
 				new THREE.PlaneGeometry( planeSideLength, planeSideLength ),
@@ -111,21 +94,21 @@
 
 			// lights
 
-			scene.add( new THREE.AmbientLight( 0x757f8e, 3 ) );
+			// scene.add( new THREE.AmbientLight( 0x757f8e, 3 ) );
 
-			const directionalLight = new THREE.DirectionalLight( 0xfffecd, 1.5 );
-			directionalLight.position.set( 100, 100, 100 );
-			directionalLight.castShadow = true;
-			directionalLight.shadow.mapSize.set( 2048, 2048 );
-			scene.add( directionalLight );
+			// const directionalLight = new THREE.DirectionalLight( 0xfffecd, 1.5 );
+			// directionalLight.position.set( 100, 100, 100 );
+			// directionalLight.castShadow = true;
+			// directionalLight.shadow.mapSize.set( 2048, 2048 );
+			// scene.add( directionalLight );
 
-			const spotLight = new THREE.SpotLight( 0xffc100, 10, 10, Math.PI / 16, .02, 2 );
-			spotLight.position.set( 2, 2, 0 );
-			const target = spotLight.target;
-			scene.add( target );
-			target.position.set( 0, 0, 0 );
-			spotLight.castShadow = true;
-			scene.add( spotLight );
+			// const spotLight = new THREE.SpotLight( 0xffc100, 10, 10, Math.PI / 16, .02, 2 );
+			// spotLight.position.set( 2, 2, 0 );
+			// const target = spotLight.target;
+			// scene.add( target );
+			// target.position.set( 0, 0, 0 );
+			// spotLight.castShadow = true;
+			// scene.add( spotLight );
 
 		}
 

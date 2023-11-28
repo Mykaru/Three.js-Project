@@ -19,27 +19,27 @@ document.body.appendChild( renderer.domElement );
 
 const controls = new OrbitControls( camera, renderer.domElement );
 
-// Create a cube
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshStandardMaterial({ color: 0xff0000 }); // Red color for the cube
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
+// Plane
+const geometry = new THREE.PlaneGeometry(10, 10);
+const material = new THREE.MeshStandardMaterial({ color: '#93E15A' }); // Red color for the cube
+const plane = new THREE.Mesh(geometry, material);
+plane.rotation.x = -Math.PI / 2;
+scene.add(plane);
 
-// Create ambient light
+// Ambient Light 
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
 scene.add(ambientLight);
 
-// Create directional light
+// Directional Light 
 const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
 directionalLight.position.set(5, 5, 5);
 scene.add(directionalLight);
 
-// Set blue background color
+// Background
 scene.background = new THREE.Color('#BFE6FA');
 
+// GLFT Loader
 const loader = new GLTFLoader();
-
-// Load the glTF model
 loader.load(
   'temple.gltf', 
   function (gltf) {
@@ -52,10 +52,7 @@ loader.load(
   }
 );
 
-
-		
-
-// Render function
+// Render
 const animate = function () {
 	requestAnimationFrame(animate);
 

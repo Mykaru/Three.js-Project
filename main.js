@@ -5,8 +5,6 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 let camera, scene, renderer;
 
-const aspectRatio = window.innerWidth / window.innerHeight;
-
 // Camera
 camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.y = 2 * Math.tan( Math.PI / 6 );
@@ -22,11 +20,17 @@ const controls = new OrbitControls( camera, renderer.domElement );
 
 // Plane
 const geometry = new THREE.BoxGeometry(30,.25,30);
-const material = new THREE.MeshStandardMaterial({ color: '#93E15A' }); // Red color for the cube
+const material = new THREE.MeshStandardMaterial({ color: '#93E15A' });
 const plane = new THREE.Mesh(geometry, material);
 plane.receiveShadow = true;
-plane.castShadow = true;
 scene.add(plane);
+
+const box = new THREE.BoxGeometry(.8,.8,.8);
+const boxMaterial = new THREE.MeshStandardMaterial({ color: '#6AE3FF'})
+const shadowTester = new THREE.Mesh(box, boxMaterial);
+shadowTester.castShadow = true;
+shadowTester.position.y = 2;
+scene.add(shadowTester);
 
 // Ambient Light 
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
@@ -46,7 +50,7 @@ directionalLight.shadow.camera.far = 50;
 
 // Render Shadows
 renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.BasicShadowMap;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 // Background
 scene.background = new THREE.Color('#BFE6FA');
@@ -54,18 +58,34 @@ scene.background = new THREE.Color('#BFE6FA');
 // GLFT Loader
 const loader = new GLTFLoader();
 loader.load(
-  'temple.gltf', 
-  function (gltf) {
-    const temple = gltf.scene;
-	temple.receiveShadow = true;	
-	temple.castShadow = true;
-    scene.add(temple);
-  },
-  undefined,
-  function (error) {
-    console.error('Error loading the model', error);
-  }
-);
+	'temple.gltf',
+	function (gltf) {
+	  const temple = gltf.scene;
+  
+	  temple.traverse((child) => {
+		if (child.isMesh) {
+		  // Recalculate normals
+		  child.geometry.computeVertexNormals();
+  
+		  child.castShadow = true;
+		  child.receiveShadow = true;
+		}
+	  });
+  
+	  // Adjust shadow bias
+	  directionalLight.shadow.bias = -0.001;
+  
+	  // Set shadow map properties
+	  renderer.shadowMap.enabled = true;
+	  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  
+	  scene.add(temple);
+	},
+	undefined,
+	function (error) {
+	  console.error('Error loading the model', error);
+	}
+  );
 
 // Render
 const animate = function () {

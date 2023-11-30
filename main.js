@@ -25,11 +25,11 @@ const plane = new THREE.Mesh(geometry, material);
 plane.receiveShadow = true;
 scene.add(plane);
 
-const box = new THREE.BoxGeometry(.8,.8,.8);
+// Box
+const box = new THREE.BoxGeometry(.5,.5,.5);
 const boxMaterial = new THREE.MeshStandardMaterial({ color: '#6AE3FF'})
 const shadowTester = new THREE.Mesh(box, boxMaterial);
 shadowTester.castShadow = true;
-shadowTester.position.y = 2;
 scene.add(shadowTester);
 
 // Ambient Light 
@@ -37,7 +37,7 @@ const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
 scene.add(ambientLight);
 
 // Directional Light 
-const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 2.5);
 directionalLight.position.set(5, 5, 5);
 directionalLight.castShadow = true;
 scene.add(directionalLight);
@@ -87,12 +87,23 @@ loader.load(
 	}
   );
 
+  let time = 0;
+
 // Render
 const animate = function () {
 	requestAnimationFrame(animate);
 
+	time += 0.01;
+
+	// Rotate the mesh on a bias
+	shadowTester.rotation.x = Math.sin(time) * Math.PI / 4; 
+	shadowTester.rotation.y = Math.cos(time) * Math.PI / 4; 
   
-	controls.update(); // Update controls
+	// Oscillate the mesh up and down
+	shadowTester.position.y = Math.sin((time * 2) * -3) + 3;
+  
+
+	controls.update(); 
   
 	renderer.render(scene, camera);
   };

@@ -33,7 +33,7 @@ shadowTester.castShadow = true;
 scene.add(shadowTester);
 
 // Ambient Light 
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
+const ambientLight = new THREE.AmbientLight('rgb(1,1,1)', 0.1);
 scene.add(ambientLight);
 
 // Directional Light 

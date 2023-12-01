@@ -19,7 +19,7 @@ document.body.appendChild( renderer.domElement );
 const controls = new OrbitControls( camera, renderer.domElement );
 
 // Plane
-const geometry = new THREE.BoxGeometry(30,.25,30);
+const geometry = new THREE.BoxGeometry(15,.25,15);
 const material = new THREE.MeshStandardMaterial({ color: '#93E15A' });
 const plane = new THREE.Mesh(geometry, material);
 plane.receiveShadow = true;
@@ -33,11 +33,11 @@ shadowTester.castShadow = true;
 scene.add(shadowTester);
 
 // Ambient Light 
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
 scene.add(ambientLight);
 
 // Directional Light 
-const directionalLight = new THREE.DirectionalLight(0xffffff, 2.5);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 0.3);
 directionalLight.position.set(5, 5, 5);
 directionalLight.castShadow = true;
 scene.add(directionalLight);
@@ -53,7 +53,7 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 // Background
-scene.background = new THREE.Color('#BFE6FA');
+scene.background = new THREE.Color('rgb(1,1,1)');
 
 // GLFT Loader
 const loader = new GLTFLoader();

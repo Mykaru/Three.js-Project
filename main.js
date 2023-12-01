@@ -43,21 +43,16 @@ fontLoader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
 
 	const text = new TextGeometry( 'Example Text', {
 		font: font,
-		size: 80,
-		height: 5,
-		curveSegments: 12,
-		bevelEnabled: true,
-		bevelThickness: 10,
-		bevelSize: 8,
-		bevelOffset: 0,
-		bevelSegments: 5
+		size: 0.6,
+		height: .1,
+		
 	} );
 
 	const textMaterial = new THREE.MeshStandardMaterial;
 	const textMesh = new THREE.Mesh(text, textMaterial)
-	textMesh.position.x = 0;
-	textMesh.position.z = -5;
-	textMesh.position.y = 2;
+	textMesh.position.x = 1;
+	textMesh.position.z = 4;
+	textMesh.rotation.x = (-Math.PI / 2);
 	scene.add(textMesh);
 } );
 

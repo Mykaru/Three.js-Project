@@ -1,6 +1,9 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+
 		
 
 let camera, scene, renderer;
@@ -32,6 +35,31 @@ const boxMaterial = new THREE.MeshStandardMaterial({ color: '#6AE3FF'})
 const shadowTester = new THREE.Mesh(box, boxMaterial);
 shadowTester.castShadow = true;
 scene.add(shadowTester);
+
+// Text
+const fontLoader = new FontLoader();
+
+fontLoader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
+
+	const text = new TextGeometry( 'Example Text', {
+		font: font,
+		size: 80,
+		height: 5,
+		curveSegments: 12,
+		bevelEnabled: true,
+		bevelThickness: 10,
+		bevelSize: 8,
+		bevelOffset: 0,
+		bevelSegments: 5
+	} );
+
+	const textMaterial = new THREE.MeshStandardMaterial;
+	const textMesh = new THREE.Mesh(text, textMaterial)
+	textMesh.position.x = 0;
+	textMesh.position.z = -5;
+	textMesh.position.y = 2;
+	scene.add(textMesh);
+} );
 
 // Ambient Light 
 const ambientLight = new THREE.AmbientLight('rgb(100,100,100)', 0);

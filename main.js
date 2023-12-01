@@ -12,17 +12,18 @@ camera.position.z = 2;
 
 scene = new THREE.Scene();
 			
-renderer = new THREE.WebGLRenderer();
+renderer = new THREE.WebGLRenderer( { alpha: true } );
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
 const controls = new OrbitControls( camera, renderer.domElement );
 
 // Plane
-const geometry = new THREE.BoxGeometry(15,.25,15);
-const material = new THREE.MeshStandardMaterial({ color: '#93E15A' });
+const geometry = new THREE.CircleGeometry(30, 32);
+const material = new THREE.MeshStandardMaterial({ color: 'rgb(50,50,30)' });
 const plane = new THREE.Mesh(geometry, material);
 plane.receiveShadow = true;
+plane.rotation.x = (-Math.PI / 2);
 scene.add(plane);
 
 // Box
@@ -33,14 +34,63 @@ shadowTester.castShadow = true;
 scene.add(shadowTester);
 
 // Ambient Light 
-const ambientLight = new THREE.AmbientLight('rgb(1,1,1)', 0.1);
+const ambientLight = new THREE.AmbientLight('rgb(100,100,100)', 0);
 scene.add(ambientLight);
 
 // Directional Light 
-const directionalLight = new THREE.DirectionalLight(0xffffff, 0.3);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 0);
 directionalLight.position.set(5, 5, 5);
 directionalLight.castShadow = true;
 scene.add(directionalLight);
+
+// Spot Light
+const spotLight = new THREE.SpotLight(0x0000ff); 
+spotLight.position.set(0, 5, 0); // Position 
+spotLight.target.position.set(0, 0, 0); // Target postion 
+spotLight.castShadow = true;
+
+spotLight.intensity = 5;
+spotLight.angle = Math.PI / 4; // Cone angle
+spotLight.penumbra = 0.1; // Softens the edge of the spotlight's light cone
+spotLight.decay = 1; // Intensity decay
+spotLight.distance = 200; // Maximum distance of the light
+
+scene.add(spotLight);
+scene.add(spotLight.target);
+
+
+// Point Light Red
+const pointLight = new THREE.PointLight();
+pointLight.color.set('rgb(255, 10 ,20)');
+pointLight.position.set(4, 3, 3);
+pointLight.castShadow = true;
+
+pointLight.intensity = 20;
+pointLight.distance = 15;
+
+scene.add(pointLight);
+
+// Point Light Green
+const pointLight2 = new THREE.PointLight();
+pointLight2.color.set('rgb(20, 255 ,10)');
+pointLight2.position.set(0, 3, -4);
+pointLight2.castShadow = true;
+
+pointLight2.intensity = 20;
+pointLight2.distance = 15;
+
+scene.add(pointLight2);
+
+// Point Light blue
+const pointLight3 = new THREE.PointLight();
+pointLight3.color.set('rgb(10, 20 ,255)');
+pointLight3.position.set(-4, 3, 2);
+pointLight3.castShadow = true;
+
+pointLight3.intensity = 20;
+pointLight3.distance = 15;
+
+scene.add(pointLight3);
 
 // Shadows
 directionalLight.shadow.mapSize.width = 1024;
@@ -53,7 +103,10 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 // Background
-scene.background = new THREE.Color('rgb(1,1,1)');
+renderer.setClearColor( 0x000000, 0 );
+
+// Fog 
+scene.fog = new THREE.Fog( 'rgb(10,0,32)', 10, 27 );
 
 // GLFT Loader
 const loader = new GLTFLoader();
@@ -74,6 +127,10 @@ loader.load(
   
 	  // Adjust shadow bias
 	  directionalLight.shadow.bias = -0.001;
+	  spotLight.shadow.bias = -0.009;
+	  pointLight.shadow.bias = -0.009;
+	  pointLight2.shadow.bias = -0.009;
+	  pointLight3.shadow.bias = -0.009;
   
 	  // Set shadow map properties
 	  renderer.shadowMap.enabled = true;
@@ -96,11 +153,11 @@ const animate = function () {
 	time += 0.01;
 
 	// Rotate the mesh on a bias
-	shadowTester.rotation.x = Math.sin(time) * Math.PI / 4; 
+	shadowTester.rotation.x = Math.sin(time) * Math.PI / 2; 
 	shadowTester.rotation.y = Math.cos(time) * Math.PI / 4; 
   
 	// Oscillate the mesh up and down
-	shadowTester.position.y = Math.sin((time * 2) * -3) + 3;
+	shadowTester.position.y = Math.sin(time * 2) + 3;
   
 
 	controls.update(); 

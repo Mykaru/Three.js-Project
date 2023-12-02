@@ -22,7 +22,7 @@ document.body.appendChild( renderer.domElement );
 const controls = new OrbitControls( camera, renderer.domElement );
 
 // Plane
-const geometry = new THREE.CircleGeometry(30, 32);
+const geometry = new THREE.CircleGeometry(35, 32);
 const material = new THREE.MeshStandardMaterial({ color: 'rgb(50,50,30)' });
 const plane = new THREE.Mesh(geometry, material);
 plane.receiveShadow = true;

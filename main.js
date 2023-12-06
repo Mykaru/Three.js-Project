@@ -24,12 +24,11 @@ renderer = new THREE.WebGLRenderer( { alpha: true } );
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 const controls = new OrbitControls( camera, renderer.domElement );
-controls.minDistance = 5;
+controls.minDistance = 2;
 controls.maxDistance = 30;
 controls.enableDamping = true;
 controls.dampingFactor = .06;
 controls.maxPolarAngle = Math.PI / 2.2;
-controls.enablePan = false;
 
 
 const renderScene = new RenderPass(scene, camera);
@@ -46,9 +45,9 @@ const bloomPass = new UnrealBloomPass(
 	0.85
 );
 
-bloomPass.threshold = 1; 
-bloomPass.strength = 0.4; 
-bloomPass.radius = 0; 
+bloomPass.threshold = .2; 
+bloomPass.strength = 0.35; 
+bloomPass.radius =0; 
 
 const outputPass = new OutputPass();
 composer.addPass(bloomPass); 
@@ -67,26 +66,15 @@ const box = new THREE.BoxGeometry(.5,.5,.5);
 const boxMaterial = new THREE.MeshStandardMaterial({
 	color: '#6AE3FF',
 	emissive: '#6AE3FF',
-	emissiveIntensity: 1.75	,  
+	emissiveIntensity: 2  
 })
 const shadowTester = new THREE.Mesh(box, boxMaterial);
 shadowTester.castShadow = true;
+shadowTester.position.y = 2.5;
 scene.add(shadowTester);
 
-// Emmission Testing
-const sphereGeometry = new THREE.SphereGeometry(1, 32, 32); 
-const emissiveMaterial = new THREE.MeshStandardMaterial({
-  color: 0xffffff, 
-  emissive: 0xffff00, 
-  emissiveIntensity: .6,  
-});
-
-const sphereMesh = new THREE.Mesh(sphereGeometry, emissiveMaterial);
-sphereMesh.position.set(0, 3, 0); 
-//scene.add(sphereMesh); 
-
 // Object Emission
-const emissionLight = new THREE.PointLight('#6AE3FF', 10, 10); 
+const emissionLight = new THREE.PointLight('#6AE3FF', 2, 10); 
 scene.add(emissionLight); 
 emissionLight.castShadow = true;
 
@@ -95,7 +83,7 @@ const fontLoader = new FontLoader();
 
 fontLoader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
 
-	const text = new TextGeometry( 'Example Text', {
+	const text = new TextGeometry( 'Mykal Coleman', {
 		font: font,
 		size: 0.6,
 		height: .1,
@@ -132,8 +120,8 @@ spotLight.penumbra = 0.1; // Softens the edge of the spotlight's light cone
 spotLight.decay = 1; // Intensity decay
 spotLight.distance = 200; // Maximum distance of the light
 
-scene.add(spotLight);
-scene.add(spotLight.target);
+// scene.add(spotLight);
+// scene.add(spotLight.target);
 
 
 // Point Light Red
@@ -236,11 +224,16 @@ function animate() {
 	shadowTester.rotation.x = Math.sin(time) * Math.PI / 2; 
 	shadowTester.rotation.y = Math.cos(time) * Math.PI / 4; 
   
-	// Oscillate the mesh up and down
-	shadowTester.position.y = Math.sin(time * 2) + 3;
-  
-
 	controls.update(); 
+
+	// Flickering Effect
+	const randomFactor = Math.random() * 0.2 - 0.1;
+	let flickeringIntensity = emissionLight.intensity + randomFactor;
+	emissionLight.intensity = flickeringIntensity
+	if (emissionLight.intensity < 1) {
+		emissionLight.intensity = 1;
+	}
+	shadowTester.material.emissiveIntensity = flickeringIntensity
 
 	emissionLight.position.copy(shadowTester.position); 
   

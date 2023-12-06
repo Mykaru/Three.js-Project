@@ -18,6 +18,7 @@ camera.position.z = 6;
 
 // Scene 
 scene = new THREE.Scene();
+scene.background = new THREE.Color('rgb(10,0,32)');
 			
 renderer = new THREE.WebGLRenderer( { alpha: true } );
 renderer.setSize( window.innerWidth, window.innerHeight );
@@ -25,6 +26,11 @@ document.body.appendChild( renderer.domElement );
 const controls = new OrbitControls( camera, renderer.domElement );
 controls.minDistance = 5;
 controls.maxDistance = 30;
+controls.enableDamping = true;
+controls.dampingFactor = .06;
+controls.maxPolarAngle = Math.PI / 2.2;
+controls.enablePan = false;
+
 
 const renderScene = new RenderPass(scene, camera);
 const composer = new EffectComposer(renderer);
@@ -176,7 +182,6 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 // Background
-	renderer.setClearColor( 'rgb(10,0,32)');
 
 
 // Fog 

@@ -41,7 +41,7 @@ const bloomPass = new UnrealBloomPass(
 );
 
 bloomPass.threshold = 1; 
-bloomPass.strength = .3; 
+bloomPass.strength = 0.4; 
 bloomPass.radius = 0; 
 
 const outputPass = new OutputPass();
@@ -126,8 +126,8 @@ spotLight.penumbra = 0.1; // Softens the edge of the spotlight's light cone
 spotLight.decay = 1; // Intensity decay
 spotLight.distance = 200; // Maximum distance of the light
 
-// scene.add(spotLight);
-// scene.add(spotLight.target);
+scene.add(spotLight);
+scene.add(spotLight.target);
 
 
 // Point Light Red
@@ -139,7 +139,7 @@ pointLight.castShadow = true;
 pointLight.intensity = 20;
 pointLight.distance = 15;
 
-// scene.add(pointLight);
+scene.add(pointLight);
 
 // Point Light Green
 const pointLight2 = new THREE.PointLight();
@@ -150,7 +150,7 @@ pointLight2.castShadow = true;
 pointLight2.intensity = 20;
 pointLight2.distance = 15;
 
-// scene.add(pointLight2);
+scene.add(pointLight2);
 
 // Point Light blue
 const pointLight3 = new THREE.PointLight();
@@ -161,7 +161,7 @@ pointLight3.castShadow = true;
 pointLight3.intensity = 20;
 pointLight3.distance = 15;
 
-// scene.add(pointLight3);
+scene.add(pointLight3);
 
 // Shadows
 pointLight.shadow.mapSize.width = 1024;
@@ -176,7 +176,8 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 // Background
-	renderer.setClearColor( '#0A0020');
+	renderer.setClearColor( 'rgb(10,0,32)');
+
 
 // Fog 
 scene.fog = new THREE.Fog( 'rgb(10,0,32)', 10, 27 );

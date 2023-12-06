@@ -65,8 +65,7 @@ scene.add(plane);
 const box = new THREE.BoxGeometry(.5,.5,.5);
 const boxMaterial = new THREE.MeshStandardMaterial({
 	color: '#6AE3FF',
-	emissive: '#6AE3FF',
-	emissiveIntensity: 2  
+	emissive: '#6AE3FF', 
 })
 const shadowTester = new THREE.Mesh(box, boxMaterial);
 shadowTester.castShadow = true;
@@ -230,8 +229,10 @@ function animate() {
 	const randomFactor = Math.random() * 0.2 - 0.1;
 	let flickeringIntensity = emissionLight.intensity + randomFactor;
 	emissionLight.intensity = flickeringIntensity
-	if (emissionLight.intensity < 1) {
-		emissionLight.intensity = 1;
+	if (emissionLight.intensity < 1.2) {
+		emissionLight.intensity = 1.2;
+	} else if (emissionLight.intensity > 2) {
+		emissionLight.intensity = 2;
 	}
 	shadowTester.material.emissiveIntensity = flickeringIntensity
 

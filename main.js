@@ -165,7 +165,7 @@ const sphere2Material = new THREE.MeshStandardMaterial({
 })
 
 const sphereTwo = new THREE.Mesh(sphere2, sphere2Material);
-sphereTwo.position.set(0, 3, -4);
+sphereTwo.position.set(0, 4, -4);
 scene.add(sphereTwo);
 //////
 

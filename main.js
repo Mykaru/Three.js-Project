@@ -55,9 +55,9 @@ composer.addPass(outputPass);
 
 // Light Variables
 let lightConstant = 2;
-let lightSwitch = true;
-let lightSwitch2 = true;
-let lightSwitch3 = true;
+let switches1 = true;
+let switches2 = true;
+let switches3 = true;
 
 // Plane
 const geometry = new THREE.CircleGeometry(35, 32);
@@ -173,7 +173,7 @@ const sphere2Material = new THREE.MeshStandardMaterial({
 
 const sphereTwo = new THREE.Mesh(sphere2, sphere2Material);
 sphereTwo.position.set(0, 4, -4);
-sphereTwo.name = 'ClickableSphereTwo'
+sphereTwo.name = 'ClickableSphere2'
 scene.add(sphereTwo);
 //////
 
@@ -196,7 +196,7 @@ const sphere3Material = new THREE.MeshStandardMaterial({
 
 const sphereThree = new THREE.Mesh(sphere3, sphere3Material);
 sphereThree.position.set(-4, 2, 2);
-sphereThree.name = 'ClickableSphereThree'
+sphereThree.name = 'ClickableSphere3'
 scene.add(sphereThree);
 //////
 
@@ -250,8 +250,55 @@ loader.load(
 	}
   );
 
-  let time = 0;
+// On click section
+const clickableObjectNames = ['ClickableSphere', 'ClickableSphere2', 'ClickableSphere3'];
+const switchesToggle = [switches1, switches2, switches3];
 
+function onMouseClick(event) {
+  
+  const mouse = new THREE.Vector2();
+	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+  
+	const raycaster = new THREE.Raycaster();
+	raycaster.setFromCamera(mouse, camera);
+  
+	const intersects = raycaster.intersectObjects(scene.children, true);
+  
+  if (intersects.length > 0) {
+    const clickedObject = intersects[0].object;
+    
+   
+    for (let i = 0; i < clickableObjectNames.length; i++) {
+      if (clickedObject.name === clickableObjectNames[i]) {
+        console.log(`Sphere ${i + 1} clicked!`);
+        switchesToggle[i] = !switchesToggle[i];
+        //console.log(switches1, switches[i]);
+       
+		console.log(`Value of switchesToggle[${i}]:`, switchesToggle[i], switches1);
+       
+        
+        break;
+      }
+    }
+  }
+}
+
+renderer.domElement.addEventListener('click', onMouseClick, false);
+
+
+
+
+
+
+
+
+
+
+
+
+  
+let time = 0;
 // Render
 function animate() {
 	requestAnimationFrame(animate);
@@ -292,10 +339,10 @@ function animate() {
 	}
 
 	// Point One // 
-	if (lightSwitch === true) {
+	if (switchesToggle[0]) {
 		pointLight.intensity = (flickeringIntensity * 2) + 9;
 		sphereOne.material.emissiveIntensity = flickeringIntensity2;
-	} else if (lightSwitch === false) {
+	} else {
 		pointLight.intensity = 0;
 		sphereOne.material.emissiveIntensity = 0;
 	}
@@ -303,10 +350,10 @@ function animate() {
 	
 
 	// Point Two //
-	if (lightSwitch2 === true) {
+	if (switchesToggle[1]) {
 		pointLight2.intensity = (flickeringIntensity2 * 2) + 9;
 		sphereTwo.material.emissiveIntensity = flickeringIntensity2;
-	} else if (lightSwitch2 === false) {
+	} else {
 		pointLight2.intensity = 0;
 		sphereTwo.material.emissiveIntensity = 0;
 	}
@@ -314,10 +361,10 @@ function animate() {
 	
 
 	// Point Three //
-	if (lightSwitch3 === true) {
+	if (switchesToggle[2]) {
 		pointLight3.intensity = (flickeringIntensity3) + 9;
 		sphereThree.material.emissiveIntensity = flickeringIntensity3;
-	} else if (lightSwitch3 === false) {
+	} else {
 		pointLight3.intensity = 0;
 		sphereThree.material.emissiveIntensity = 0;
 	}
@@ -328,40 +375,3 @@ function animate() {
   };
 
 animate ();		
-
-
-// On click Section
-function onMouseClick(event) {
-	const mouse = new THREE.Vector2();
-	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-  
-	const raycaster = new THREE.Raycaster();
-	raycaster.setFromCamera(mouse, camera);
-  
-	const intersects = raycaster.intersectObjects(scene.children, true);
-  
-	// Check if any objects are intersected
-	if (intersects.length > 0) {
-	  const clickedObject = intersects[0].object;
-  
-	  
-	  if (clickedObject.name === 'ClickableSphere') {
-		console.log('Sphere clicked!');
-		lightSwitch = !lightSwitch;
-	  }
-
-	  if (clickedObject.name === 'ClickableSphereTwo') {
-		console.log('Sphere clicked!');
-		lightSwitch2 = !lightSwitch2;
-	  }
-
-	  if (clickedObject.name === 'ClickableSphereThree') {
-		console.log('Sphere clicked!');
-		lightSwitch3 = !lightSwitch3;
-	  }
-	}
-  }
-  
-  
-  renderer.domElement.addEventListener('click', onMouseClick, false);

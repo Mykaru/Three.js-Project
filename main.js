@@ -24,7 +24,7 @@ renderer = new THREE.WebGLRenderer( { alpha: true } );
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 const controls = new OrbitControls( camera, renderer.domElement );
-controls.minDistance = 2;
+controls.minDistance = 3.5;
 controls.maxDistance = 30;
 controls.enableDamping = true;
 controls.dampingFactor = .06;

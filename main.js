@@ -89,20 +89,35 @@ emissionLight.position.copy(shadowTester.position);
 const fontLoader = new FontLoader();
 
 fontLoader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
-
-	const text = new TextGeometry( 'Mykal Coleman', {
+	// Line One (Name)
+	const textLine1 = new TextGeometry( 'Mykal Coleman', {
 		font: font,
 		size: 0.6,
-		height: .1,
+		height: .075,
 		
 	} );
 
 	const textMaterial = new THREE.MeshStandardMaterial;
-	const textMesh = new THREE.Mesh(text, textMaterial)
+	const textMesh = new THREE.Mesh(textLine1, textMaterial)
 	textMesh.position.x = 1;
 	textMesh.position.z = 4;
 	textMesh.rotation.x = (-Math.PI / 2);
 	scene.add(textMesh);
+
+	// Line Two 
+	const textLine2 = new TextGeometry( 'Click the lights!\nSample Text\nSample Text', {
+		font: font,
+		size: 0.4,
+		height: .05,
+		
+	} );
+
+	const textMaterial2 = new THREE.MeshStandardMaterial;
+	const textMesh2 = new THREE.Mesh(textLine2, textMaterial2)
+	textMesh2.position.x = 1;
+	textMesh2.position.z = 4.85;
+	textMesh2.rotation.x = (-Math.PI / 2);
+	scene.add(textMesh2);
 } );
 
 // Ambient Light 
@@ -117,15 +132,15 @@ scene.add(directionalLight);
 
 // Spot Light
 const spotLight = new THREE.SpotLight(0x0000ff); 
-spotLight.position.set(0, 5, 0); // Position 
-spotLight.target.position.set(0, 0, 0); // Target postion 
+spotLight.position.set(0, 5, 0); 
+spotLight.target.position.set(0, 0, 0); 
 spotLight.castShadow = true;
 
 spotLight.intensity = 5;
-spotLight.angle = Math.PI / 4; // Cone angle
-spotLight.penumbra = 0.1; // Softens the edge of the spotlight's light cone
-spotLight.decay = 1; // Intensity decay
-spotLight.distance = 200; // Maximum distance of the light
+spotLight.angle = Math.PI / 4; 
+spotLight.penumbra = 0.1; 
+spotLight.decay = 1; 
+spotLight.distance = 200; 
 
 // scene.add(spotLight);
 // scene.add(spotLight.target);
@@ -286,18 +301,6 @@ function onMouseClick(event) {
 
 renderer.domElement.addEventListener('click', onMouseClick, false);
 
-
-
-
-
-
-
-
-
-
-
-
-  
 let time = 0;
 // Render
 function animate() {

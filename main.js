@@ -53,7 +53,11 @@ const outputPass = new OutputPass();
 composer.addPass(bloomPass); 
 composer.addPass(outputPass);
 
+// Light Variables
 let lightConstant = 2;
+let lightSwitch = false;
+let lightSwitch2 = false;
+let lightSwitch3 = false;
 
 // Plane
 const geometry = new THREE.CircleGeometry(35, 32);
@@ -143,6 +147,7 @@ const sphereMaterial = new THREE.MeshStandardMaterial({
 })
 
 const sphereOne = new THREE.Mesh(sphere, sphereMaterial);
+sphereOne.name = 'ClickableSphere'
 sphereOne.position.set(3, 3, 3);
 scene.add(sphereOne);
 //////
@@ -283,9 +288,15 @@ function animate() {
 	}
 
 	// Point One // 
-	pointLight.intensity = (flickeringIntensity * 2) + 9;
+	if (lightSwitch === true) {
+		pointLight.intensity = (flickeringIntensity * 2) + 9;
+		sphereOne.material.emissiveIntensity = flickeringIntensity2;
+	} else if (lightSwitch === false) {
+		pointLight.intensity = 0;
+		sphereOne.material.emissiveIntensity = 0;
+	}
 	pointLight.position.copy(sphereOne.position);
-	sphereOne.material.emissiveIntensity = flickeringIntensity2;
+	
 
 	// Point Two //
 	pointLight2.intensity = (flickeringIntensity2 * 2) + 9;
@@ -306,3 +317,34 @@ function animate() {
   };
 
 animate ();		
+
+
+// On click Section
+function onMouseClick(event) {
+	// Calculate normalized device coordinates (NDC) from mouse position
+	const mouse = new THREE.Vector2();
+	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+  
+	// Raycasting to detect intersections with objects
+	const raycaster = new THREE.Raycaster();
+	raycaster.setFromCamera(mouse, camera);
+  
+	// Find intersected objects
+	const intersects = raycaster.intersectObjects(scene.children, true);
+  
+	// Check if any objects are intersected
+	if (intersects.length > 0) {
+	  const clickedObject = intersects[0].object;
+  
+	  // Check if the clicked object matches the sphere and execute a function
+	  if (clickedObject.name === 'ClickableSphere') {
+		// Execute your function or code here when the sphere is clicked
+		console.log('Sphere clicked!');
+		lightSwitch = !lightSwitch;
+	  }
+	}
+  }
+  
+  // Event listener for mouse click on the renderer's DOM element
+  renderer.domElement.addEventListener('click', onMouseClick, false);

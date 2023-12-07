@@ -25,7 +25,7 @@ renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 const controls = new OrbitControls( camera, renderer.domElement );
 controls.minDistance = 3.5;
-controls.maxDistance = 30;
+controls.maxDistance = 20;
 controls.enableDamping = true;
 controls.dampingFactor = .06;
 controls.maxPolarAngle = Math.PI / 2.2;

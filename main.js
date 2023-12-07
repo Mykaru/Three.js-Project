@@ -53,6 +53,8 @@ const outputPass = new OutputPass();
 composer.addPass(bloomPass); 
 composer.addPass(outputPass);
 
+let lightConstant = 2;
+
 // Plane
 const geometry = new THREE.CircleGeometry(35, 32);
 const material = new THREE.MeshStandardMaterial({ color: 'rgb(50,50,30)' });
@@ -123,21 +125,31 @@ spotLight.distance = 200; // Maximum distance of the light
 // scene.add(spotLight.target);
 
 
-// Point Light Red
+///// Red Emissin Sphere /////
 const pointLight = new THREE.PointLight();
 pointLight.color.set('rgb(255, 10 ,20)');
-pointLight.position.set(4, 3, 3);
 pointLight.castShadow = true;
 
-pointLight.intensity = 20;
+pointLight.intensity = 10;
 pointLight.distance = 15;
 
 scene.add(pointLight);
 
-// Point Light Green
+// Red Emission Sphere Mesh //
+const sphere = new THREE.SphereGeometry(.3, 16, 16);
+const sphereMaterial = new THREE.MeshStandardMaterial({
+	color: 'rgb(255, 0, 0)',
+	emissive: 'rgb(255, 100, 100)', 
+})
+
+const sphereOne = new THREE.Mesh(sphere, sphereMaterial);
+sphereOne.position.set(3, 3, 3);
+scene.add(sphereOne);
+//////
+
+///// Green Emission Sphere //////
 const pointLight2 = new THREE.PointLight();
 pointLight2.color.set('rgb(20, 255 ,10)');
-pointLight2.position.set(0, 3, -4);
 pointLight2.castShadow = true;
 
 pointLight2.intensity = 20;
@@ -145,10 +157,21 @@ pointLight2.distance = 15;
 
 scene.add(pointLight2);
 
-// Point Light blue
+// Sphere Mesh //
+const sphere2 = new THREE.SphereGeometry(.3, 16, 16);
+const sphere2Material = new THREE.MeshStandardMaterial({
+	color: 'rgb(0, 255, 0)',
+	emissive: 'rgb(100, 255, 100)', 
+})
+
+const sphereTwo = new THREE.Mesh(sphere2, sphere2Material);
+sphereTwo.position.set(0, 3, -4);
+scene.add(sphereTwo);
+//////
+
+///// Blue Emission Sphere //////
 const pointLight3 = new THREE.PointLight();
 pointLight3.color.set('rgb(10, 20 ,255)');
-pointLight3.position.set(-4, 3, 2);
 pointLight3.castShadow = true;
 
 pointLight3.intensity = 20;
@@ -156,20 +179,27 @@ pointLight3.distance = 15;
 
 scene.add(pointLight3);
 
+// Sphere Mesh //
+const sphere3 = new THREE.SphereGeometry(.3, 16, 16);
+const sphere3Material = new THREE.MeshStandardMaterial({
+	color: 'rgb(0, 0, 255)',
+	emissive: 'rgb(90, 120, 255)', 
+})
+
+const sphereThree = new THREE.Mesh(sphere3, sphere3Material);
+sphereThree.position.set(-4, 2, 2);
+scene.add(sphereThree);
+//////
+
 // Shadows
 pointLight.shadow.mapSize.width = 1024;
 pointLight.shadow.mapSize.height = 1024;
 pointLight.shadow.camera.near = 0.5;
 pointLight.shadow.camera.far = 50;
 
-
-
 // Render Shadows
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-// Background
-
 
 // Fog 
 scene.fog = new THREE.Fog( 'rgb(10,0,32)', 10, 27 );
@@ -227,21 +257,52 @@ function animate() {
 
 	// Flickering Effect
 	const randomFactor = Math.random() * 0.2 - 0.1;
-	let flickeringIntensity = emissionLight.intensity + randomFactor;
-	emissionLight.intensity = flickeringIntensity
-	if (emissionLight.intensity < 1.2) {
-		emissionLight.intensity = 1.2;
-	} else if (emissionLight.intensity > 2) {
-		emissionLight.intensity = 2;
-	}
-	shadowTester.material.emissiveIntensity = flickeringIntensity
+	const randomFactor2 = Math.random() * 0.3 - 0.15;
+	const randomFactor3 = Math.random() * 0.6 - 0.3;
 
+	let flickeringIntensity = lightConstant + randomFactor;
+	let flickeringIntensity2 = lightConstant + randomFactor2;
+	let flickeringIntensity3 = lightConstant + randomFactor3;
+	
+	if (flickeringIntensity < 1) {
+		flickeringIntensity = 1;
+	} else if (flickeringIntensity > 2) {
+		flickeringIntensity = 2;
+	}
+
+	if (flickeringIntensity2 < 1) {
+		flickeringIntensity2 = 1;
+	} else if (flickeringIntensity2 > 3) {
+		flickeringIntensity2 = 2;
+	}
+
+	if (flickeringIntensity3 < 1) {
+		flickeringIntensity3 = 1;
+	} else if (flickeringIntensity3 > 4) {
+		flickeringIntensity3 = 4;
+	}
+
+	// Point One // 
+	pointLight.intensity = (flickeringIntensity * 2) + 9;
+	pointLight.position.copy(sphereOne.position);
+	sphereOne.material.emissiveIntensity = flickeringIntensity2;
+
+	// Point Two //
+	pointLight2.intensity = (flickeringIntensity2 * 2) + 9;
+	pointLight2.position.copy(sphereTwo.position);
+	sphereTwo.material.emissiveIntensity = flickeringIntensity2;
+
+	// Point Three //
+	pointLight3.intensity = (flickeringIntensity3) + 9;
+	pointLight3.position.copy(sphereThree.position);
+	sphereThree.material.emissiveIntensity = flickeringIntensity3;
+
+	emissionLight.intensity = flickeringIntensity;
+	shadowTester.material.emissiveIntensity = flickeringIntensity;
 	emissionLight.position.copy(shadowTester.position); 
   
 	composer.render(renderer);
 	// renderer.render(scene, camera);
-	
-
   };
 
 animate ();		

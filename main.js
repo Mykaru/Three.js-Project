@@ -55,9 +55,9 @@ composer.addPass(outputPass);
 
 // Light Variables
 let lightConstant = 2;
-let lightSwitch = false;
-let lightSwitch2 = false;
-let lightSwitch3 = false;
+let lightSwitch = true;
+let lightSwitch2 = true;
+let lightSwitch3 = true;
 
 // Plane
 const geometry = new THREE.CircleGeometry(35, 32);
@@ -72,6 +72,7 @@ const box = new THREE.BoxGeometry(.5,.5,.5);
 const boxMaterial = new THREE.MeshStandardMaterial({
 	color: '#6AE3FF',
 	emissive: '#6AE3FF', 
+	emissiveIntensity: 2
 })
 const shadowTester = new THREE.Mesh(box, boxMaterial);
 shadowTester.castShadow = true;
@@ -82,6 +83,7 @@ scene.add(shadowTester);
 const emissionLight = new THREE.PointLight('#6AE3FF', 2, 10); 
 scene.add(emissionLight); 
 emissionLight.castShadow = true;
+emissionLight.position.copy(shadowTester.position); 
 
 // Text
 const fontLoader = new FontLoader();
@@ -171,6 +173,7 @@ const sphere2Material = new THREE.MeshStandardMaterial({
 
 const sphereTwo = new THREE.Mesh(sphere2, sphere2Material);
 sphereTwo.position.set(0, 4, -4);
+sphereTwo.name = 'ClickableSphereTwo'
 scene.add(sphereTwo);
 //////
 
@@ -193,6 +196,7 @@ const sphere3Material = new THREE.MeshStandardMaterial({
 
 const sphereThree = new THREE.Mesh(sphere3, sphere3Material);
 sphereThree.position.set(-4, 2, 2);
+sphereThree.name = 'ClickableSphereThree'
 scene.add(sphereThree);
 //////
 
@@ -299,19 +303,26 @@ function animate() {
 	
 
 	// Point Two //
-	pointLight2.intensity = (flickeringIntensity2 * 2) + 9;
+	if (lightSwitch2 === true) {
+		pointLight2.intensity = (flickeringIntensity2 * 2) + 9;
+		sphereTwo.material.emissiveIntensity = flickeringIntensity2;
+	} else if (lightSwitch2 === false) {
+		pointLight2.intensity = 0;
+		sphereTwo.material.emissiveIntensity = 0;
+	}
 	pointLight2.position.copy(sphereTwo.position);
-	sphereTwo.material.emissiveIntensity = flickeringIntensity2;
+	
 
 	// Point Three //
-	pointLight3.intensity = (flickeringIntensity3) + 9;
+	if (lightSwitch3 === true) {
+		pointLight3.intensity = (flickeringIntensity3) + 9;
+		sphereThree.material.emissiveIntensity = flickeringIntensity3;
+	} else if (lightSwitch3 === false) {
+		pointLight3.intensity = 0;
+		sphereThree.material.emissiveIntensity = 0;
+	}
 	pointLight3.position.copy(sphereThree.position);
-	sphereThree.material.emissiveIntensity = flickeringIntensity3;
-
-	emissionLight.intensity = flickeringIntensity;
-	shadowTester.material.emissiveIntensity = flickeringIntensity;
-	emissionLight.position.copy(shadowTester.position); 
-  
+	
 	composer.render(renderer);
 	// renderer.render(scene, camera);
   };
@@ -321,30 +332,36 @@ animate ();
 
 // On click Section
 function onMouseClick(event) {
-	// Calculate normalized device coordinates (NDC) from mouse position
 	const mouse = new THREE.Vector2();
 	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
 	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
   
-	// Raycasting to detect intersections with objects
 	const raycaster = new THREE.Raycaster();
 	raycaster.setFromCamera(mouse, camera);
   
-	// Find intersected objects
 	const intersects = raycaster.intersectObjects(scene.children, true);
   
 	// Check if any objects are intersected
 	if (intersects.length > 0) {
 	  const clickedObject = intersects[0].object;
   
-	  // Check if the clicked object matches the sphere and execute a function
+	  
 	  if (clickedObject.name === 'ClickableSphere') {
-		// Execute your function or code here when the sphere is clicked
 		console.log('Sphere clicked!');
 		lightSwitch = !lightSwitch;
+	  }
+
+	  if (clickedObject.name === 'ClickableSphereTwo') {
+		console.log('Sphere clicked!');
+		lightSwitch2 = !lightSwitch2;
+	  }
+
+	  if (clickedObject.name === 'ClickableSphereThree') {
+		console.log('Sphere clicked!');
+		lightSwitch3 = !lightSwitch3;
 	  }
 	}
   }
   
-  // Event listener for mouse click on the renderer's DOM element
+  
   renderer.domElement.addEventListener('click', onMouseClick, false);

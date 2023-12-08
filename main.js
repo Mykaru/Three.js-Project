@@ -13,8 +13,8 @@ let camera, scene, renderer;
 
 // Camera
 camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.y = 6 * Math.tan( Math.PI / 6 );
-camera.position.z = 6;
+camera.position.y = 7 * Math.tan( Math.PI / 6 );
+camera.position.z = 9;
 
 // Scene 
 scene = new THREE.Scene();

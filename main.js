@@ -58,6 +58,7 @@ let lightConstant = 2;
 let switches1 = true;
 let switches2 = true;
 let switches3 = true;
+let switches4 = true;
 
 // Plane
 const geometry = new THREE.CircleGeometry(35, 32);
@@ -77,6 +78,7 @@ const boxMaterial = new THREE.MeshStandardMaterial({
 const shadowTester = new THREE.Mesh(box, boxMaterial);
 shadowTester.castShadow = true;
 shadowTester.position.y = 2.5;
+shadowTester.name = 'CentralCube'
 scene.add(shadowTester);
 
 // Object Emission
@@ -266,8 +268,8 @@ loader.load(
   );
 
 // On click section
-const clickableObjectNames = ['ClickableSphere', 'ClickableSphere2', 'ClickableSphere3'];
-const switchesToggle = [switches1, switches2, switches3];
+const clickableObjectNames = ['ClickableSphere', 'ClickableSphere2', 'ClickableSphere3', 'CentralCube'];
+const switchesToggle = [switches1, switches2, switches3, switches4];
 
 function onMouseClick(event) {
   
@@ -283,16 +285,13 @@ function onMouseClick(event) {
   if (intersects.length > 0) {
     const clickedObject = intersects[0].object;
     
-   
     for (let i = 0; i < clickableObjectNames.length; i++) {
       if (clickedObject.name === clickableObjectNames[i]) {
         console.log(`Sphere ${i + 1} clicked!`);
         switchesToggle[i] = !switchesToggle[i];
-        //console.log(switches1, switches[i]);
        
-		console.log(`Value of switchesToggle[${i}]:`, switchesToggle[i], switches1);
-       
-        
+		console.log(`Value of switchesToggle[${i}]:`, switchesToggle[4]);
+           
         break;
       }
     }
@@ -372,6 +371,15 @@ function animate() {
 		sphereThree.material.emissiveIntensity = 0;
 	}
 	pointLight3.position.copy(sphereThree.position);
+
+	// Central Cube light 
+	if (switchesToggle[3]) {
+		shadowTester.material.emissiveIntensity = 2;
+		emissionLight.intensity = 2;
+	} else {
+		shadowTester.material.emissiveIntensity = 0;
+		emissionLight.intensity = 0;
+	}
 	
 	composer.render(renderer);
 	// renderer.render(scene, camera);

@@ -117,7 +117,7 @@ fontLoader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
 	const textMaterial2 = new THREE.MeshStandardMaterial;
 	const textMesh2 = new THREE.Mesh(textLine2, textMaterial2)
 	textMesh2.position.x = 1;
-	textMesh2.position.z = 4.85;
+	textMesh2.position.z = 4.7;
 	textMesh2.rotation.x = (-Math.PI / 2);
 	scene.add(textMesh2);
 } );

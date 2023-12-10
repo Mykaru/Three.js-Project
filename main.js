@@ -267,25 +267,31 @@ loader.load(
 		const buildingSignTop = gltf.scene;
 		scene.add(buildingSignTop);
 
-	})
+	});
 
 	const loader3 = new GLTFLoader();
 	loader3.load('assets/main_ac/ac_unit.gltf', function (gltf) {
 		const mainAC = gltf.scene;
 		scene.add(mainAC);
-	})
+	});
 
 	const loader4 = new GLTFLoader();
 	loader4.load('assets/building_sign_bar/bar_sign.gltf', function (gltf) {
 		const mainAC = gltf.scene;
 		scene.add(mainAC);
-	})
+	});
 
 	const loader5 = new GLTFLoader();
-	loader4.load('assets/rain_cover/rain_cover.gltf', function (gltf) {
+	loader5.load('assets/rain_cover/rain_cover.gltf', function (gltf) {
 		const mainAC = gltf.scene;
 		scene.add(mainAC);
 	})
+
+	const loader6 = new GLTFLoader();
+	loader6.load('assets/main_building/main_building.gltf', function (gltf) {
+		const mainAC = gltf.scene;
+		scene.add(mainAC);
+	});
 
 
   

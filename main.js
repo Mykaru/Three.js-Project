@@ -281,6 +281,13 @@ loader.load(
 		scene.add(mainAC);
 	})
 
+	const loader5 = new GLTFLoader();
+	loader4.load('assets/rain_cover/rain_cover.gltf', function (gltf) {
+		const mainAC = gltf.scene;
+		scene.add(mainAC);
+	})
+
+
   
 
 // On click section

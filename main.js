@@ -77,7 +77,7 @@ const boxMaterial = new THREE.MeshStandardMaterial({
 })
 const shadowTester = new THREE.Mesh(box, boxMaterial);
 shadowTester.castShadow = true;
-shadowTester.position.y = 2.5;
+shadowTester.position.set(0, 2.5, 10);
 shadowTester.name = 'CentralCube'
 scene.add(shadowTester);
 
@@ -167,7 +167,7 @@ const sphereMaterial = new THREE.MeshStandardMaterial({
 
 const sphereOne = new THREE.Mesh(sphere, sphereMaterial);
 sphereOne.name = 'ClickableSphere'
-sphereOne.position.set(3, 3, 3);
+sphereOne.position.set(8, 3, 3);
 scene.add(sphereOne);
 //////
 
@@ -189,7 +189,7 @@ const sphere2Material = new THREE.MeshStandardMaterial({
 })
 
 const sphereTwo = new THREE.Mesh(sphere2, sphere2Material);
-sphereTwo.position.set(0, 4, -4);
+sphereTwo.position.set(0, 4, 8);
 sphereTwo.name = 'ClickableSphere2'
 scene.add(sphereTwo);
 //////
@@ -212,7 +212,7 @@ const sphere3Material = new THREE.MeshStandardMaterial({
 })
 
 const sphereThree = new THREE.Mesh(sphere3, sphere3Material);
-sphereThree.position.set(-4, 2, 2);
+sphereThree.position.set(-10, 2, 2);
 sphereThree.name = 'ClickableSphere3'
 scene.add(sphereThree);
 //////
@@ -230,7 +230,7 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 // Fog 
 scene.fog = new THREE.Fog( 'rgb(10,0,32)', 10, 27 );
 
-// GLFT Loader
+// GLFT Loaders
 const loader = new GLTFLoader();
 loader.load(
 	'temple.gltf',
@@ -259,13 +259,29 @@ loader.load(
 	  renderer.shadowMap.enabled = true;
 	  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   
-	  scene.add(temple);
-	},
-	undefined,
-	function (error) {
-	  console.error('Error loading the model', error);
-	}
-  );
+	  //scene.add(temple);
+	});
+
+	const loader2 = new GLTFLoader();
+	loader2.load('assets/baked_top_sign/Baked_top_sign.gltf', function (gltf) {
+		const buildingSignTop = gltf.scene;
+		scene.add(buildingSignTop);
+
+	})
+
+	const loader3 = new GLTFLoader();
+	loader3.load('assets/main_ac/ac_unit.gltf', function (gltf) {
+		const mainAC = gltf.scene;
+		scene.add(mainAC);
+	})
+
+	const loader4 = new GLTFLoader();
+	loader4.load('assets/building_sign_bar/bar_sign.gltf', function (gltf) {
+		const mainAC = gltf.scene;
+		scene.add(mainAC);
+	})
+
+  
 
 // On click section
 const clickableObjectNames = ['ClickableSphere', 'ClickableSphere2', 'ClickableSphere3', 'CentralCube'];

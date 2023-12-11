@@ -29,8 +29,8 @@ controls.minDistance = 3.5;
 controls.maxDistance = 30;
 controls.enableDamping = true;
 controls.dampingFactor = .06;
-controls.maxPolarAngle = Math.PI / 1.7;
-controls.target.y = 5;
+controls.maxPolarAngle = Math.PI / 1.9;
+controls.target.y = 4;
 
 
 const renderScene = new RenderPass(scene, camera);
@@ -150,28 +150,7 @@ spotLight.distance = 200;
 // scene.add(spotLight.target);
 
 
-///// Red Emissin Sphere /////
-const pointLight = new THREE.PointLight();
-pointLight.color.set('rgb(255, 10 ,20)');
-pointLight.castShadow = true;
 
-pointLight.intensity = 10;
-pointLight.distance = 15;
-
-scene.add(pointLight);
-
-// Red Emission Sphere Mesh //
-const sphere = new THREE.SphereGeometry(.3, 16, 16);
-const sphereMaterial = new THREE.MeshStandardMaterial({
-	color: 'rgb(255, 0, 0)',
-	emissive: 'rgb(255, 100, 100)', 
-})
-
-const sphereOne = new THREE.Mesh(sphere, sphereMaterial);
-sphereOne.name = 'ClickableSphere'
-sphereOne.position.set(8, 3, 3);
-scene.add(sphereOne);
-//////
 
 ///// Green Emission Sphere //////
 const pointLight2 = new THREE.PointLight();
@@ -219,15 +198,7 @@ sphereThree.name = 'ClickableSphere3'
 scene.add(sphereThree);
 //////
 
-// Shadows
-pointLight.shadow.mapSize.width = 1024;
-pointLight.shadow.mapSize.height = 1024;
-pointLight.shadow.camera.near = 0.5;
-pointLight.shadow.camera.far = 50;
 
-// Render Shadows
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 // Fog 
 scene.fog = new THREE.Fog( 'rgb(8,0,22)', 10, 50 );
@@ -264,6 +235,7 @@ loader.load(
 	  //scene.add(temple);
 	});
 
+//// Top Building Sign ////
 const loader2 = new GLTFLoader();
 loader2.load('assets/baked_top_sign/Baked_top_sign.gltf', function (gltf) {
 	const buildingSignTop = gltf.scene;
@@ -271,12 +243,14 @@ loader2.load('assets/baked_top_sign/Baked_top_sign.gltf', function (gltf) {
 
 });
 
+//// Main Building AC Unit ////
 const loader3 = new GLTFLoader();
 loader3.load('assets/main_ac/ac_unit.gltf', function (gltf) {
 	const mainAC = gltf.scene;
 	scene.add(mainAC);
 });
 
+//// Main Building Front Emitter ////
 const loader4 = new GLTFLoader();
 loader4.load('assets/building_sign_bar/bar_sign.gltf', function (gltf) {
 	const signBar = gltf.scene;
@@ -293,20 +267,27 @@ loader4.load('assets/building_sign_bar/bar_sign.gltf', function (gltf) {
 	});
 });
 
+//// Main Building Rain Cover ////
 const loader5 = new GLTFLoader();
 loader5.load('assets/rain_cover/rain_cover.gltf', function (gltf) {
 	const rainCover = gltf.scene;
 	scene.add(rainCover);
 })
 
+//// Main Building ////
+let building;
 const loader6 = new GLTFLoader();
 loader6.load('assets/main_building/main_building.gltf', function (gltf) {
-    const building = gltf.scene;
+    building = gltf.scene;
     scene.add(building);
+	
+	building.position.y = -0.1
+	building.name = 'mainBuildingFront';
 
     building.traverse(function (child) {
         if (child.isMesh) {
 			child.castShadow = true;
+			child.name = 'mainBuildingFront';
 		  	child.receiveShadow = true;
             if (child.material.emissive !== undefined) {
                 child.material.emissiveIntensity = 1.2; 
@@ -315,6 +296,33 @@ loader6.load('assets/main_building/main_building.gltf', function (gltf) {
     });
 });
 
+let mainBuildingSwitch = true;
+
+
+/// Main Building Light ///
+const pointLight = new THREE.PointLight();
+pointLight.color.set('rgb(230, 200, 100)');
+pointLight.castShadow = true;
+
+pointLight.intensity = 10;
+pointLight.distance = 15;
+
+scene.add(pointLight);
+
+// Light Indicator //
+const sphere = new THREE.SphereGeometry(.3, 16, 16);
+const sphereMaterial = new THREE.MeshStandardMaterial({
+	color: 'rgb(255, 255, 0)',
+	emissive: 'rgb(230, 200, 100)', 
+})
+
+const sphereOne = new THREE.Mesh(sphere, sphereMaterial);
+sphereOne.name = 'ClickableSphere'
+sphereOne.position.set(3, 1.8, .8);
+scene.add(sphereOne);
+/////////////////////////////////////////////////
+
+//// Street Light One ////
 const loader7 = new GLTFLoader();
 loader7.load('assets/street_lights/street_lights.gltf', function (gltf) {
     const streetLights = gltf.scene;
@@ -331,6 +339,8 @@ loader7.load('assets/street_lights/street_lights.gltf', function (gltf) {
         }
     });
 });
+
+//// Street Light Two ////
 const loader71 = new GLTFLoader();
 loader71.load('assets/street_lights2/street_lights2.gltf', function (gltf) {
     const streetLights2 = gltf.scene;
@@ -348,6 +358,7 @@ loader71.load('assets/street_lights2/street_lights2.gltf', function (gltf) {
     });
 });
 
+//// Vending Machine Red ////
 const loader8 = new GLTFLoader();
 loader8.load('assets/Vending1/street_lights.gltf', function (gltf) {
 	const vending1 = gltf.scene;
@@ -355,7 +366,6 @@ loader8.load('assets/Vending1/street_lights.gltf', function (gltf) {
 
 	vending1.traverse((child) => {
 		if (child.isMesh) {
-		  // Recalculate normals
 		  child.geometry.computeVertexNormals();
   
 		  child.castShadow = true;
@@ -365,6 +375,7 @@ loader8.load('assets/Vending1/street_lights.gltf', function (gltf) {
   
 })
 
+//// Vending Machine White ////
 const loader9 = new GLTFLoader();
 loader9.load('assets/vending2/vending2.gltf', function (gltf) {
 	const vending2 = gltf.scene;
@@ -372,7 +383,6 @@ loader9.load('assets/vending2/vending2.gltf', function (gltf) {
 
 	vending2.traverse((child) => {
 		if (child.isMesh) {
-		  // Recalculate normals
 		  child.geometry.computeVertexNormals();
   
 		  child.castShadow = true;
@@ -381,6 +391,7 @@ loader9.load('assets/vending2/vending2.gltf', function (gltf) {
 	  });
 })
 
+//// Pile of Beer Crates ////
 const loader10 = new GLTFLoader();
 loader10.load('assets/beer_crates/beer_crates.gltf', function (gltf) {
 	const beer = gltf.scene;
@@ -388,7 +399,6 @@ loader10.load('assets/beer_crates/beer_crates.gltf', function (gltf) {
 
 	beer.traverse((child) => {
 		if (child.isMesh) {
-		  // Recalculate normals
 		  child.geometry.computeVertexNormals();
   
 		  child.castShadow = true;
@@ -397,6 +407,7 @@ loader10.load('assets/beer_crates/beer_crates.gltf', function (gltf) {
 	  });
 })
 
+//// Scene Ground ////
 const loader11 = new GLTFLoader();
 loader11.load('assets/ground/ground.gltf', function (gltf) {
 	const ground = gltf.scene;
@@ -404,7 +415,6 @@ loader11.load('assets/ground/ground.gltf', function (gltf) {
 
 	ground.traverse((child) => {
 		if (child.isMesh) {
-		  // Recalculate normals
 		  child.geometry.computeVertexNormals();
   
 		  child.castShadow = true;
@@ -413,12 +423,30 @@ loader11.load('assets/ground/ground.gltf', function (gltf) {
 	  });
 })
 
+//// Ground Sign One ////
+const loader12 = new GLTFLoader();
+loader12.load('assets/sign1/sign1.gltf', function (gltf) {
+	const sign = gltf.scene;
+	scene.add(sign);
+
+	sign.traverse(function (child) {
+        if (child.isMesh) {
+			child.castShadow = true;
+		  	child.receiveShadow = true;
+            if (child.material.emissive !== undefined) {
+                child.material.emissiveIntensity = 1; 
+            }
+        }
+    });
+})
+
+
 
   
 
 // On click section
-const clickableObjectNames = ['ClickableSphere', 'ClickableSphere2', 'ClickableSphere3', 'CentralCube'];
-const switchesToggle = [switches1, switches2, switches3, switches4];
+const clickableObjectNames = ['ClickableSphere', 'ClickableSphere2', 'ClickableSphere3', 'CentralCube', 'mainBuildingFront'];
+const switchesToggle = [switches1, switches2, switches3, switches4, mainBuildingSwitch];
 
 function onMouseClick(event) {
   
@@ -443,9 +471,19 @@ function onMouseClick(event) {
            
         break;
       }
-    }
-  }
-}
+    } 
+	}
+}	
+
+// Shadows
+pointLight.shadow.mapSize.width = 1024;
+pointLight.shadow.mapSize.height = 1024;
+pointLight.shadow.camera.near = 0.5;
+pointLight.shadow.camera.far = 50;
+
+// Render Shadows
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 renderer.domElement.addEventListener('click', onMouseClick, false);
 
@@ -490,12 +528,30 @@ function animate() {
 	}
 
 	// Point One // 
-	if (switchesToggle[0]) {
-		pointLight.intensity = (flickeringIntensity * 2) + 9;
-		sphereOne.material.emissiveIntensity = flickeringIntensity2;
+	if (switchesToggle[4]) {
+		pointLight.intensity = 9;
+		if (building) {
+			building.traverse(function (child) {
+				if (child.isMesh) {
+					if (child.material.emissive !== undefined) {
+						child.material.emissiveIntensity = 1.2; 
+					}
+				}
+			});
+		}
+		
 	} else {
 		pointLight.intensity = 0;
-		sphereOne.material.emissiveIntensity = 0;
+		if (building) {
+			building.traverse(function (child) {
+				if (child.isMesh) {
+					if (child.material.emissive !== undefined) {
+						child.material.emissiveIntensity = 0; 
+					}
+				}
+			});
+		}
+		
 	}
 	pointLight.position.copy(sphereOne.position);
 	

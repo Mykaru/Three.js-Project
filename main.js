@@ -13,7 +13,7 @@ let camera, scene, renderer;
 
 // Camera
 camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const cameraPosition = new THREE.Vector3(0, 5, 16);
+const cameraPosition = new THREE.Vector3(0, 5, 21);
 camera.position.copy(cameraPosition);
 
 
@@ -74,7 +74,8 @@ scene.add(plane);
 
 // Text
 const fontLoader = new FontLoader();
-
+let textMesh2;
+let overlayBoolean = false;
 fontLoader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
 	// Line One (Name)
 	const textLine1 = new TextGeometry( 'Mykal Coleman', {
@@ -92,7 +93,7 @@ fontLoader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
 	scene.add(textMesh);
 
 	// Line Two 
-	const textLine2 = new TextGeometry( 'Click the lights!\nSample Text\nSample Text', {
+	const textLine2 = new TextGeometry( 'Click the lights!\nDescription', {
 		font: font,
 		size: 0.4,
 		height: .05,
@@ -100,12 +101,18 @@ fontLoader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
 	} );
 
 	const textMaterial2 = new THREE.MeshStandardMaterial;
-	const textMesh2 = new THREE.Mesh(textLine2, textMaterial2)
+	textMesh2 = new THREE.Mesh(textLine2, textMaterial2)
 	textMesh2.position.x = 1;
 	textMesh2.position.z = 4.7+8;
 	textMesh2.rotation.x = (-Math.PI / 2);
+	textMesh2.name = 'Display Text'
+	
 	scene.add(textMesh2);
 } );
+
+const textLight = new THREE.PointLight(0xff0000, 10);
+textLight.position.set(1, 4, 12); 
+scene.add(textLight);
 
 // Ambient Light 
 const ambientLight = new THREE.AmbientLight('rgb(100,100,100)', 0);
@@ -423,6 +430,7 @@ const loader10 = new GLTFLoader();
 loader10.load('assets/beer_crates/beer_crates.gltf', function (gltf) {
 	const beer = gltf.scene;
 	beer.position.x =+ -3;
+	beer.position.z =+ 1;
 	scene.add(beer);
 
 	beer.traverse((child) => {
@@ -541,8 +549,8 @@ scene.add(sphereThree);
 //////
 
 // On click section
-const clickableObjectNames = ['ClickableSphere', 'ClickableSphere2', 'ClickableSphere3', 'CentralCube', 'mainBuildingFront', 'Bar Sign', 'Top Sign', '711', 'Vending White', 'Vending Red', 'Lamp One', 'Lamp Two', 'Sign'];
-const switchesToggle = [switches1, switches2, switches3, switches4, mainBuildingSwitch, barSignSwitch, topSignSwitch, seven11Switch, vendingWhiteSwitch, vendingRedSwitch, lampSwitch1, lampSwitch2, signSwitch];
+const clickableObjectNames = ['ClickableSphere', 'ClickableSphere2', 'ClickableSphere3', 'CentralCube', 'mainBuildingFront', 'Bar Sign', 'Top Sign', '711', 'Vending White', 'Vending Red', 'Lamp One', 'Lamp Two', 'Sign', 'Display Text'];
+const switchesToggle = [switches1, switches2, switches3, switches4, mainBuildingSwitch, barSignSwitch, topSignSwitch, seven11Switch, vendingWhiteSwitch, vendingRedSwitch, lampSwitch1, lampSwitch2, signSwitch, overlayBoolean];
 
 function onMouseClick(event) {
   
@@ -568,6 +576,11 @@ function onMouseClick(event) {
         break;
       }
     } 
+
+	if (clickedObject.name === 'Display Text') {
+        console.log('Display Text clicked!');
+        showOverlay();
+    }
 	}
 }	
 
@@ -848,6 +861,40 @@ if (switchesToggle[12]) {
 
 	composer.render(renderer);
 	// renderer.render(scene, camera);
+
   };
 
 animate ();		
+
+
+/// Function to show the overlay with slide-in animation
+function showOverlay() {
+	const overlay = document.getElementById('overlay');
+	overlay.classList.add('slideIn');
+	console.log('please');
+  }
+  
+  // Function to hide the overlay with slide-out animation
+  function hideOverlay() {
+	const overlay = document.getElementById('overlay');
+	overlay.classList.remove('slideIn');
+	overlay.classList.add('slideOut');
+  }
+  
+  // Adding event listeners
+  document.addEventListener('DOMContentLoaded', function () {
+	const closeButton = document.getElementById('closeButton');
+	const overlay = document.getElementById('overlay');
+  
+	// Hide overlay when the close button is clicked
+	closeButton.addEventListener('click', function () {
+	  hideOverlay();
+	});
+  
+	// Hide overlay when clicking outside of the content
+	overlay.addEventListener('click', function (event) {
+	  if (event.target === overlay) {
+		hideOverlay();
+	  }
+	});
+  });

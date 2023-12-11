@@ -3,6 +3,32 @@ body {
     margin: 0;
 }
 
-h1 {
-    background-color: transparent;
-}
+#overlay {
+    position: fixed;
+    bottom: -100%; /* Start off-screen */
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+    transition: bottom 0.5s ease-in-out;
+  }
+  
+  #content {
+    padding: 20px;
+    color: white;
+  }
+  
+  #closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+  }
+  
+  /* Animation for the slide-in and slide-out effect */
+  .slideIn {
+    bottom: 0;
+  }
+  
+  .slideOut {
+    bottom: -100%;
+  }

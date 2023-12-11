@@ -5,16 +5,25 @@
 		<title>Project 3</title>
 		<link rel="stylesheet" href="styles.css">
 	</head>
-	<body>
-		
- <script type="importmap">
+<body>
+	<script type="importmap">
        {
          "imports": {
            "three": "https://unpkg.com/three/build/three.module.js",
            "three/addons/": "https://unpkg.com/three/examples/jsm/"
          }
        }
-     </script>
-		<script type="module" src="main.js"></script>
+	</script>
+	<script type="module" src="main.js"></script>
+
+
+	<div id="overlay">
+		<div id="content">
+		  <span id="closeButton">&times;</span>
+		  <h1>Your Title</h1>
+		  <p>Your Description</p>
+		</div>
+	</div>
+	
 	</body>
 </html>

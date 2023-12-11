@@ -468,6 +468,7 @@ loader12.load('assets/sign1/sign1.gltf', function (gltf) {
 	scene.add(sign);
 
 	pointLightSign.shadow.bias = -0.009;
+	spotLight2.shadow.bias = -0.009;
 
 	sign.traverse(function (child) {
         if (child.isMesh) {

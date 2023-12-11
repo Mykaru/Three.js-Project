@@ -325,6 +325,38 @@ loader7.load('assets/street_lights/street_lights.gltf', function (gltf) {
         }
     });
 });
+const loader71 = new GLTFLoader();
+loader71.load('assets/street_lights2/street_lights2.gltf', function (gltf) {
+    const streetLights2 = gltf.scene;
+    scene.add(streetLights2);
+	streetLights2.position.y = -0.2
+
+    streetLights2.traverse(function (child) {
+        if (child.isMesh) {
+            if (child.material.emissive !== undefined) {
+                child.material.emissiveIntensity = 1.2; 
+            }
+        }
+    });
+});
+
+const loader8 = new GLTFLoader();
+loader8.load('assets/Vending1/street_lights.gltf', function (gltf) {
+	const vending1 = gltf.scene;
+	scene.add(vending1);
+})
+
+const loader9 = new GLTFLoader();
+loader9.load('assets/vending2/vending2.gltf', function (gltf) {
+	const vending2 = gltf.scene;
+	scene.add(vending2);
+})
+
+const loader10 = new GLTFLoader();
+loader10.load('assets/beer_crates/beer_crates.gltf', function (gltf) {
+	const beer = gltf.scene;
+	scene.add(beer);
+})
 
 
   

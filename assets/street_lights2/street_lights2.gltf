@@ -20,14 +20,14 @@
 	"nodes":[
 		{
 			"mesh":0,
-			"name":"Pole",
+			"name":"Pole.001",
 			"scale":[
 				0.07321800291538239,
 				2.501430034637451,
 				0.07321800291538239
 			],
 			"translation":[
-				-6.5114898681640625,
+				9.567144393920898,
 				0.3964945077896118,
 				2.967519998550415
 			]
@@ -100,7 +100,7 @@
 	],
 	"meshes":[
 		{
-			"name":"Cylinder.001",
+			"name":"Cylinder.002",
 			"primitives":[
 				{
 					"attributes":{
@@ -313,7 +313,7 @@
 	"buffers":[
 		{
 			"byteLength":136012,
-			"uri":"street_lights.bin"
+			"uri":"street_lights2.bin"
 		}
 	]
 }

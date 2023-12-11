@@ -300,13 +300,15 @@ scene.add(sphereOne);
 
 //// Street Light One ////
 const loader7 = new GLTFLoader();
+let lampOne;
 loader7.load('assets/street_lights/street_lights.gltf', function (gltf) {
-    const streetLights = gltf.scene;
-    scene.add(streetLights);
-	streetLights.position.y = -0.2
+    lampOne = gltf.scene;
+    scene.add(lampOne);
+	lampOne.position.y = -0.2
 
-    streetLights.traverse(function (child) {
+    lampOne.traverse(function (child) {
         if (child.isMesh) {
+			child.name = 'Lamp One'
 			child.castShadow = true;
 		  	child.receiveShadow = true;
             if (child.material.emissive !== undefined) {
@@ -315,6 +317,8 @@ loader7.load('assets/street_lights/street_lights.gltf', function (gltf) {
         }
     });
 });
+
+let lampSwitch1 = true;
 
 // Spot Light
 const spotLight = new THREE.SpotLight('rgb(230, 200, 100)'); 
@@ -333,13 +337,15 @@ scene.add(spotLight.target);
 
 //// Street Light Two ////
 const loader71 = new GLTFLoader();
+let lampTwo;
 loader71.load('assets/street_lights2/street_lights2.gltf', function (gltf) {
-    const streetLights2 = gltf.scene;
-    scene.add(streetLights2);
-	streetLights2.position.y = -0.2
+    lampTwo = gltf.scene;
+    scene.add(lampTwo);
+	lampTwo.position.y = -0.2
 
-    streetLights2.traverse(function (child) {
+    lampTwo.traverse(function (child) {
         if (child.isMesh) {
+			child.name = 'Lamp Two'
 			child.castShadow = true;
 		  	child.receiveShadow = true;
             if (child.material.emissive !== undefined) {
@@ -349,6 +355,7 @@ loader71.load('assets/street_lights2/street_lights2.gltf', function (gltf) {
     });
 });
 
+let lampSwitch2 = true;
 // Spot Light 2
 const spotLight2 = new THREE.SpotLight('rgb(230, 200, 100)'); 
 spotLight2.position.set(9.5, 5.3, 3.5); 
@@ -504,8 +511,8 @@ scene.add(sphereThree);
 //////
 
 // On click section
-const clickableObjectNames = ['ClickableSphere', 'ClickableSphere2', 'ClickableSphere3', 'CentralCube', 'mainBuildingFront', 'Bar Sign', 'Top Sign', '711', 'Vending White', 'Vending Red'];
-const switchesToggle = [switches1, switches2, switches3, switches4, mainBuildingSwitch, barSignSwitch, topSignSwitch, seven11Switch, vendingWhiteSwitch, vendingRedSwitch];
+const clickableObjectNames = ['ClickableSphere', 'ClickableSphere2', 'ClickableSphere3', 'CentralCube', 'mainBuildingFront', 'Bar Sign', 'Top Sign', '711', 'Vending White', 'Vending Red', 'Lamp One', 'Lamp Two'];
+const switchesToggle = [switches1, switches2, switches3, switches4, mainBuildingSwitch, barSignSwitch, topSignSwitch, seven11Switch, vendingWhiteSwitch, vendingRedSwitch, lampSwitch1, lampSwitch2];
 
 function onMouseClick(event) {
   
@@ -733,7 +740,55 @@ function animate() {
 		}
 	}
 
+	// Street Light One //
+	if (switchesToggle[10]) {
+		spotLight.intensity = (flickeringIntensity3 * 7) - 5;
+		if (lampOne) {
+			lampOne.traverse(function (child) {
+				if (child.isMesh) {
+					if (child.material.emissive !== undefined) {
+						child.material.emissiveIntensity = 1; 
+					}
+				}
+			});
+		}
+	} else {
+		spotLight.intensity = 0;
+		if (lampOne) {
+			lampOne.traverse(function (child) {
+				if (child.isMesh) {
+					if (child.material.emissive !== undefined) {
+						child.material.emissiveIntensity = 0; 
+					}
+				}
+			});
+		}
+	}
 
+// Street Light Two//
+if (switchesToggle[11]) {
+	spotLight2.intensity = (flickeringIntensity2 * 7) + 2;
+	if (lampTwo) {
+		lampTwo.traverse(function (child) {
+			if (child.isMesh) {
+				if (child.material.emissive !== undefined) {
+					child.material.emissiveIntensity = 1; 
+				}
+			}
+		});
+	}
+} else {
+	spotLight2.intensity = 0;
+	if (lampTwo) {
+		lampTwo.traverse(function (child) {
+			if (child.isMesh) {
+				if (child.material.emissive !== undefined) {
+					child.material.emissiveIntensity = 0; 
+				}
+			}
+		});
+	}
+}
 
 	composer.render(renderer);
 	// renderer.render(scene, camera);

@@ -422,6 +422,7 @@ let vendingRedSwitch = true;
 const loader10 = new GLTFLoader();
 loader10.load('assets/beer_crates/beer_crates.gltf', function (gltf) {
 	const beer = gltf.scene;
+	beer.position.x =+ -3;
 	scene.add(beer);
 
 	beer.traverse((child) => {

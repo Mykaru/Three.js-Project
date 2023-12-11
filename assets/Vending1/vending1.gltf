@@ -18,23 +18,18 @@
 	"nodes":[
 		{
 			"mesh":0,
-			"name":"Cube.015",
-			"scale":[
-				1.009811520576477,
-				1,
-				1
-			],
+			"name":"Cube.001",
 			"translation":[
-				-2.2955708503723145,
-				0.37453725934028625,
-				0.7223341464996338
+				-0.8662667274475098,
+				0.37314093112945557,
+				0.6903579235076904
 			]
 		}
 	],
 	"materials":[
 		{
 			"doubleSided":true,
-			"name":"Vending_Red",
+			"name":"Vending_White",
 			"pbrMetallicRoughness":{
 				"baseColorTexture":{
 					"index":0
@@ -72,7 +67,7 @@
 					"emissiveStrength":2
 				}
 			},
-			"name":"Emission.001",
+			"name":"Emission",
 			"pbrMetallicRoughness":{
 				"baseColorTexture":{
 					"index":2
@@ -84,7 +79,7 @@
 	],
 	"meshes":[
 		{
-			"name":"Cube.046",
+			"name":"Cube.037",
 			"primitives":[
 				{
 					"attributes":{
@@ -133,43 +128,43 @@
 	"images":[
 		{
 			"mimeType":"image/png",
-			"name":"Vending_Red",
-			"uri":"Vending_Red.png"
+			"name":"Vending_White",
+			"uri":"Vending_White.png"
 		}
 	],
 	"accessors":[
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":560,
+			"count":272,
 			"max":[
-				0.6497651934623718,
-				2.202176809310913,
-				0.36710527539253235
+				0.6448898911476135,
+				2,
+				0.24570289254188538
 			],
 			"min":[
-				-0.6475065350532532,
-				0.0021768510341644287,
-				-0.24422435462474823
+				-0.6448898911476135,
+				0,
+				-0.23499763011932373
 			],
 			"type":"VEC3"
 		},
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":560,
+			"count":272,
 			"type":"VEC2"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":560,
+			"count":272,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":3,
 			"componentType":5123,
-			"count":1146,
+			"count":660,
 			"type":"SCALAR"
 		},
 		{
@@ -211,14 +206,14 @@
 			"componentType":5126,
 			"count":12,
 			"max":[
-				0.6057082414627075,
-				2.1044161319732666,
-				0.1656741499900818
+				0.61037677526474,
+				1.88766348361969,
+				0.10991421341896057
 			],
 			"min":[
-				-0.6034495830535889,
-				1.1150580644607544,
-				0.1656741499900818
+				-0.61037677526474,
+				0.8956968784332275,
+				0.10991421341896057
 			],
 			"type":"VEC3"
 		},
@@ -244,74 +239,74 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":6720,
+			"byteLength":3264,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":4480,
-			"byteOffset":6720,
+			"byteLength":2176,
+			"byteOffset":3264,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":6720,
-			"byteOffset":11200,
+			"byteLength":3264,
+			"byteOffset":5440,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":2292,
-			"byteOffset":17920,
+			"byteLength":1320,
+			"byteOffset":8704,
 			"target":34963
 		},
 		{
 			"buffer":0,
 			"byteLength":10896,
-			"byteOffset":20212,
+			"byteOffset":10024,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":7264,
-			"byteOffset":31108,
+			"byteOffset":20920,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":10896,
-			"byteOffset":38372,
+			"byteOffset":28184,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":4248,
-			"byteOffset":49268,
+			"byteOffset":39080,
 			"target":34963
 		},
 		{
 			"buffer":0,
 			"byteLength":144,
-			"byteOffset":53516,
+			"byteOffset":43328,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":96,
-			"byteOffset":53660,
+			"byteOffset":43472,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":144,
-			"byteOffset":53756,
+			"byteOffset":43568,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":60,
-			"byteOffset":53900,
+			"byteOffset":43712,
 			"target":34963
 		}
 	],
@@ -323,8 +318,8 @@
 	],
 	"buffers":[
 		{
-			"byteLength":53960,
-			"uri":"vending2.bin"
+			"byteLength":43772,
+			"uri":"vending1.bin"
 		}
 	]
 }

@@ -108,7 +108,7 @@ fontLoader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
 } );
 
 // Ambient Light 
-const ambientLight = new THREE.AmbientLight('rgb(100,100,100)', 0);
+const ambientLight = new THREE.AmbientLight('rgb(100,100,100)', 1);
 scene.add(ambientLight);
 
 // Directional Light 
@@ -358,38 +358,52 @@ loader71.load('assets/street_lights2/street_lights2.gltf', function (gltf) {
     });
 });
 
-//// Vending Machine Red ////
-const loader8 = new GLTFLoader();
-loader8.load('assets/Vending1/street_lights.gltf', function (gltf) {
-	const vending1 = gltf.scene;
-	scene.add(vending1);
-
-	vending1.traverse((child) => {
-		if (child.isMesh) {
-		  child.geometry.computeVertexNormals();
-  
-		  child.castShadow = true;
-		  child.receiveShadow = true;
-		}
-	  });
-  
-})
-
 //// Vending Machine White ////
-const loader9 = new GLTFLoader();
-loader9.load('assets/vending2/vending2.gltf', function (gltf) {
-	const vending2 = gltf.scene;
-	scene.add(vending2);
+const loader8 = new GLTFLoader();
+let vendingWhite;
+loader8.load('assets/Vending1/vending1.gltf', function (gltf) {
+	vendingWhite = gltf.scene;
+	scene.add(vendingWhite);
 
-	vending2.traverse((child) => {
+	vendingWhite.traverse((child) => {
 		if (child.isMesh) {
 		  child.geometry.computeVertexNormals();
-  
 		  child.castShadow = true;
 		  child.receiveShadow = true;
+		  child.name = 'Vending White'
+
+		  if (child.material.emissive !== undefined) {
+			child.material.emissiveIntensity = 1.2; 
+		}
+		}
+	  });
+  
+})
+
+let vendingWhiteSwitch = true;
+
+//// Vending Machine Red ////
+const loader9 = new GLTFLoader();
+let vendingRed;
+loader9.load('assets/vending2/vending2.gltf', function (gltf) {
+	vendingRed = gltf.scene;
+	scene.add(vendingRed);
+
+	vendingRed.traverse((child) => {
+		if (child.isMesh) {
+		  child.geometry.computeVertexNormals();
+		  child.castShadow = true;
+		  child.receiveShadow = true;
+		  child.name = 'Vending Red'
+
+		  if (child.material.emissive !== undefined) {
+			child.material.emissiveIntensity = 1.2; 
+		}
 		}
 	  });
 })
+
+let vendingRedSwitch = true;
 
 //// Pile of Beer Crates ////
 const loader10 = new GLTFLoader();
@@ -483,12 +497,9 @@ sphereThree.name = 'ClickableSphere3'
 scene.add(sphereThree);
 //////
 
-
-  
-
 // On click section
-const clickableObjectNames = ['ClickableSphere', 'ClickableSphere2', 'ClickableSphere3', 'CentralCube', 'mainBuildingFront', 'Bar Sign', 'Top Sign', '711'];
-const switchesToggle = [switches1, switches2, switches3, switches4, mainBuildingSwitch, barSignSwitch, topSignSwitch, seven11Switch];
+const clickableObjectNames = ['ClickableSphere', 'ClickableSphere2', 'ClickableSphere3', 'CentralCube', 'mainBuildingFront', 'Bar Sign', 'Top Sign', '711', 'Vending White', 'Vending Red'];
+const switchesToggle = [switches1, switches2, switches3, switches4, mainBuildingSwitch, barSignSwitch, topSignSwitch, seven11Switch, vendingWhiteSwitch, vendingRedSwitch];
 
 function onMouseClick(event) {
   
@@ -529,7 +540,6 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 renderer.domElement.addEventListener('click', onMouseClick, false);
 
-let time = 0;
 // Render
 function animate() {
 	requestAnimationFrame(animate);
@@ -671,6 +681,52 @@ function animate() {
 		}
 	}
 	
+	// Vending White //
+	if (switchesToggle[8]) {
+		if (vendingWhite) {
+			vendingWhite.traverse(function (child) {
+				if (child.isMesh) {
+					if (child.material.emissive !== undefined) {
+						child.material.emissiveIntensity = 1.2; 
+					}
+				}
+			});
+		}
+	} else {
+		if (vendingWhite) {
+			vendingWhite.traverse(function (child) {
+				if (child.isMesh) {
+					if (child.material.emissive !== undefined) {
+						child.material.emissiveIntensity = 0; 
+					}
+				}
+			});
+		}
+	}
+
+	// Vending Red //
+	if (switchesToggle[9]) {
+		if (vendingRed) {
+			vendingRed.traverse(function (child) {
+				if (child.isMesh) {
+					if (child.material.emissive !== undefined) {
+						child.material.emissiveIntensity = 1.2; 
+					}
+				}
+			});
+		}
+	} else {
+		if (vendingRed) {
+			vendingRed.traverse(function (child) {
+				if (child.isMesh) {
+					if (child.material.emissive !== undefined) {
+						child.material.emissiveIntensity = 0; 
+					}
+				}
+			});
+		}
+	}
+
 	composer.render(renderer);
 	// renderer.render(scene, camera);
   };

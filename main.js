@@ -110,8 +110,8 @@ fontLoader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
 	scene.add(textMesh2);
 } );
 
-const textLight = new THREE.PointLight(0xff0000, 10);
-textLight.position.set(1, 4, 12); 
+const textLight = new THREE.PointLight(0xff0000, 6);
+textLight.position.set(2.5, 2, 12.5); 
 scene.add(textLight);
 
 // Ambient Light 

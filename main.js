@@ -264,46 +264,60 @@ loader.load(
 	  //scene.add(temple);
 	});
 
-	const loader2 = new GLTFLoader();
-	loader2.load('assets/baked_top_sign/Baked_top_sign.gltf', function (gltf) {
-		const buildingSignTop = gltf.scene;
-		scene.add(buildingSignTop);
+const loader2 = new GLTFLoader();
+loader2.load('assets/baked_top_sign/Baked_top_sign.gltf', function (gltf) {
+	const buildingSignTop = gltf.scene;
+	scene.add(buildingSignTop);
 
-	});
+});
 
-	const loader3 = new GLTFLoader();
-	loader3.load('assets/main_ac/ac_unit.gltf', function (gltf) {
-		const mainAC = gltf.scene;
-		scene.add(mainAC);
-	});
+const loader3 = new GLTFLoader();
+loader3.load('assets/main_ac/ac_unit.gltf', function (gltf) {
+	const mainAC = gltf.scene;
+	scene.add(mainAC);
+});
 
-	const loader4 = new GLTFLoader();
-	loader4.load('assets/building_sign_bar/bar_sign.gltf', function (gltf) {
-		const signBar = gltf.scene;
-		scene.add(signBar);
+const loader4 = new GLTFLoader();
+loader4.load('assets/building_sign_bar/bar_sign.gltf', function (gltf) {
+	const signBar = gltf.scene;
+	scene.add(signBar);
 
-		signBar.traverse(function (child) {
-			if (child.isMesh) {
-				if (child.material.emissive !== undefined) {
-					child.material.emissiveIntensity = 1.5; 
-				}
+	signBar.traverse(function (child) {
+		if (child.isMesh) {
+			if (child.material.emissive !== undefined) {
+				child.material.emissiveIntensity = 1.5; 
 			}
-		});
+		}
 	});
+});
 
-	const loader5 = new GLTFLoader();
-	loader5.load('assets/rain_cover/rain_cover.gltf', function (gltf) {
-		const rainCover = gltf.scene;
-		scene.add(rainCover);
-	})
+const loader5 = new GLTFLoader();
+loader5.load('assets/rain_cover/rain_cover.gltf', function (gltf) {
+	const rainCover = gltf.scene;
+	scene.add(rainCover);
+})
 
-	const loader6 = new GLTFLoader();
-
+const loader6 = new GLTFLoader();
 loader6.load('assets/main_building/main_building.gltf', function (gltf) {
     const building = gltf.scene;
     scene.add(building);
 
     building.traverse(function (child) {
+        if (child.isMesh) {
+            if (child.material.emissive !== undefined) {
+                child.material.emissiveIntensity = 1.2; 
+            }
+        }
+    });
+});
+
+const loader7 = new GLTFLoader();
+loader7.load('assets/street_lights/street_lights.gltf', function (gltf) {
+    const streetLights = gltf.scene;
+    scene.add(streetLights);
+	streetLights.position.y = -0.2
+
+    streetLights.traverse(function (child) {
         if (child.isMesh) {
             if (child.material.emissive !== undefined) {
                 child.material.emissiveIntensity = 1.2; 

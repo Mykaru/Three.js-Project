@@ -137,28 +137,7 @@ spotLight.distance = 200;
 
 
 
-///// Blue Emission Sphere //////
-const pointLight3 = new THREE.PointLight();
-pointLight3.color.set('rgb(10, 20 ,255)');
-pointLight3.castShadow = true;
 
-pointLight3.intensity = 20;
-pointLight3.distance = 15;
-
-scene.add(pointLight3);
-
-// Sphere Mesh //
-const sphere3 = new THREE.SphereGeometry(.3, 16, 16);
-const sphere3Material = new THREE.MeshStandardMaterial({
-	color: 'rgb(0, 0, 255)',
-	emissive: 'rgb(90, 120, 255)', 
-})
-
-const sphereThree = new THREE.Mesh(sphere3, sphere3Material);
-sphereThree.position.set(-10, 2, 2);
-sphereThree.name = 'ClickableSphere3'
-scene.add(sphereThree);
-//////
 
 
 
@@ -465,11 +444,12 @@ loader12.load('assets/sign1/sign1.gltf', function (gltf) {
 const loader13 = new GLTFLoader();
 let seven11;
 loader13.load('assets/711/711.gltf', function (gltf) {
-	const seven11 = gltf.scene;
+	seven11 = gltf.scene;
 	scene.add(seven11);
 
 	seven11.traverse(function (child) {
         if (child.isMesh) {
+			child.name = '711';
 			child.castShadow = true;
 		  	child.receiveShadow = true;
             if (child.material.emissive !== undefined) {
@@ -479,14 +459,36 @@ loader13.load('assets/711/711.gltf', function (gltf) {
     });
 })
 
+let seven11Switch = true;
 
+///// Blue Emission Sphere //////
+const pointLight3 = new THREE.PointLight();
+pointLight3.color.set('rgb(255, 255 ,220)');
+pointLight3.castShadow = true;
+
+pointLight3.distance = 20;
+
+scene.add(pointLight3);
+
+// Sphere Mesh //
+const sphere3 = new THREE.SphereGeometry(.1, 16, 16);
+const sphere3Material = new THREE.MeshStandardMaterial({
+	color: 'rgb(255, 255 ,220)',
+	emissive: 'rgb(255, 255 ,220)', 
+})
+
+const sphereThree = new THREE.Mesh(sphere3, sphere3Material);
+sphereThree.position.set(-7.4, 4.9, .75);
+sphereThree.name = 'ClickableSphere3'
+scene.add(sphereThree);
+//////
 
 
   
 
 // On click section
-const clickableObjectNames = ['ClickableSphere', 'ClickableSphere2', 'ClickableSphere3', 'CentralCube', 'mainBuildingFront', 'Bar Sign', 'Top Sign'];
-const switchesToggle = [switches1, switches2, switches3, switches4, mainBuildingSwitch, barSignSwitch, topSignSwitch];
+const clickableObjectNames = ['ClickableSphere', 'ClickableSphere2', 'ClickableSphere3', 'CentralCube', 'mainBuildingFront', 'Bar Sign', 'Top Sign', '711'];
+const switchesToggle = [switches1, switches2, switches3, switches4, mainBuildingSwitch, barSignSwitch, topSignSwitch, seven11Switch];
 
 function onMouseClick(event) {
   
@@ -618,13 +620,29 @@ function animate() {
 	pointLight2.position.copy(sphereTwo.position);
 	
 
-	// Point Three //
-	if (switchesToggle[2]) {
-		pointLight3.intensity = (flickeringIntensity3) + 9;
-		sphereThree.material.emissiveIntensity = flickeringIntensity3;
+	// 711 Light //
+	if (switchesToggle[7]) {
+		pointLight3.intensity = (flickeringIntensity3) + 12;
+		if (seven11) {
+			seven11.traverse(function (child) {
+				if (child.isMesh) {
+					if (child.material.emissive !== undefined) {
+						child.material.emissiveIntensity = .9; 
+					}
+				}
+			});
+		}
 	} else {
 		pointLight3.intensity = 0;
-		sphereThree.material.emissiveIntensity = 0;
+		if (seven11) {
+			seven11.traverse(function (child) {
+				if (child.isMesh) {
+					if (child.material.emissive !== undefined) {
+						child.material.emissiveIntensity = 0; 
+					}
+				}
+			});
+		}
 	}
 	pointLight3.position.copy(sphereThree.position);
 

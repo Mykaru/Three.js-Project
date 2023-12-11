@@ -70,24 +70,7 @@ plane.receiveShadow = true;
 plane.rotation.x = (-Math.PI / 2);
 scene.add(plane);
 
-// Box
-const box = new THREE.BoxGeometry(.5,.5,.5);
-const boxMaterial = new THREE.MeshStandardMaterial({
-	color: '#6AE3FF',
-	emissive: '#6AE3FF', 
-	emissiveIntensity: 2
-})
-const shadowTester = new THREE.Mesh(box, boxMaterial);
-shadowTester.castShadow = true;
-shadowTester.position.set(0, 2.5, 10);
-shadowTester.name = 'CentralCube'
-scene.add(shadowTester);
 
-// Object Emission
-const emissionLight = new THREE.PointLight('#6AE3FF', 2, 10); 
-scene.add(emissionLight); 
-emissionLight.castShadow = true;
-emissionLight.position.copy(shadowTester.position); 
 
 // Text
 const fontLoader = new FontLoader();
@@ -216,11 +199,44 @@ loader.load(
 
 //// Top Building Sign ////
 const loader2 = new GLTFLoader();
+let topSign;
 loader2.load('assets/baked_top_sign/Baked_top_sign.gltf', function (gltf) {
-	const buildingSignTop = gltf.scene;
-	scene.add(buildingSignTop);
+	topSign = gltf.scene;
+	scene.add(topSign);
+	topSign.traverse( function (child) {
+		if (child.isMesh) {
+			child.castShadow = true;
+			child.name = 'Top Sign'
+		  	child.receiveShadow = true;
+			if (child.material.emissive !== undefined) {
+				child.material.emissiveIntensity = 1.5; 
+			}
+		}
+	})
 
 });
+
+let topSignSwitch = true;
+
+// Box
+const box = new THREE.BoxGeometry(.05,.05,.05);
+const boxMaterial = new THREE.MeshStandardMaterial({
+	color: 'rgb(255, 200. 85)',
+	emissive: 'rgb(255, 200, 85)', 
+	emissiveIntensity: 0
+})
+const shadowTester = new THREE.Mesh(box, boxMaterial);
+shadowTester.castShadow = true;
+shadowTester.position.set(5.76, 9.7, 2);
+shadowTester.name = 'CentralCube'
+scene.add(shadowTester);
+
+// Object Emission
+const emissionLight = new THREE.PointLight('rgb(255, 200, 85)', 2, 14); 
+scene.add(emissionLight); 
+emissionLight.castShadow = true;
+emissionLight.position.copy(shadowTester.position); 
+///////////////////////////////////
 
 //// Main Building AC Unit ////
 const loader3 = new GLTFLoader();
@@ -450,8 +466,8 @@ loader12.load('assets/sign1/sign1.gltf', function (gltf) {
   
 
 // On click section
-const clickableObjectNames = ['ClickableSphere', 'ClickableSphere2', 'ClickableSphere3', 'CentralCube', 'mainBuildingFront', 'Bar Sign'];
-const switchesToggle = [switches1, switches2, switches3, switches4, mainBuildingSwitch, barSignSwitch];
+const clickableObjectNames = ['ClickableSphere', 'ClickableSphere2', 'ClickableSphere3', 'CentralCube', 'mainBuildingFront', 'Bar Sign', 'Top Sign'];
+const switchesToggle = [switches1, switches2, switches3, switches4, mainBuildingSwitch, barSignSwitch, topSignSwitch];
 
 function onMouseClick(event) {
   
@@ -497,11 +513,6 @@ let time = 0;
 function animate() {
 	requestAnimationFrame(animate);
 
-	time += 0.01;
-
-	// Rotate the mesh on a bias
-	shadowTester.rotation.x = Math.sin(time) * Math.PI / 2; 
-	shadowTester.rotation.y = Math.cos(time) * Math.PI / 4; 
   
 	controls.update(); 
 
@@ -532,7 +543,7 @@ function animate() {
 		flickeringIntensity3 = 4;
 	}
 
-	// Point One // 
+	// Main Building Front // 
 	if (switchesToggle[4]) {
 		pointLight.intensity = 9;
 		if (building) {
@@ -561,7 +572,7 @@ function animate() {
 	pointLight.position.copy(sphereOne.position);
 	
 
-	// Point Two //
+	// Bar Sign //
 	if (switchesToggle[5]) {
 		pointLight2.intensity =  9;
 		if (signBar) {
@@ -598,13 +609,29 @@ function animate() {
 	}
 	pointLight3.position.copy(sphereThree.position);
 
-	// Central Cube light 
-	if (switchesToggle[3]) {
-		shadowTester.material.emissiveIntensity = 2;
-		emissionLight.intensity = 2;
+	// Top Sign Light 
+	if (switchesToggle[6]) {
+		emissionLight.intensity =  4;
+		if (topSign) {
+			topSign.traverse(function (child) {
+				if (child.isMesh) {
+					if (child.material.emissive !== undefined) {
+						child.material.emissiveIntensity = 1.2; 
+					}
+				}
+			});
+		}
 	} else {
-		shadowTester.material.emissiveIntensity = 0;
 		emissionLight.intensity = 0;
+		if (topSign) {
+			topSign.traverse(function (child) {
+				if (child.isMesh) {
+					if (child.material.emissive !== undefined) {
+						child.material.emissiveIntensity = 0; 
+					}
+				}
+			});
+		}
 	}
 	
 	composer.render(renderer);

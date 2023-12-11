@@ -108,7 +108,7 @@ fontLoader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
 } );
 
 // Ambient Light 
-const ambientLight = new THREE.AmbientLight('rgb(100,100,100)', .05);
+const ambientLight = new THREE.AmbientLight('rgb(100,100,100)', 0);
 scene.add(ambientLight);
 
 // Directional Light 
@@ -451,13 +451,18 @@ loader11.load('assets/ground/ground.gltf', function (gltf) {
 })
 
 //// Ground Sign One ////
+const pointLightSign = new THREE.PointLight();
 const loader12 = new GLTFLoader();
+let sign;
 loader12.load('assets/sign1/sign1.gltf', function (gltf) {
-	const sign = gltf.scene;
+	sign = gltf.scene;
 	scene.add(sign);
+
+	pointLightSign.shadow.bias = -0.009;
 
 	sign.traverse(function (child) {
         if (child.isMesh) {
+			child.name = 'Sign';
 			child.castShadow = true;
 		  	child.receiveShadow = true;
             if (child.material.emissive !== undefined) {
@@ -466,6 +471,30 @@ loader12.load('assets/sign1/sign1.gltf', function (gltf) {
         }
     });
 })
+
+let signSwitch = true
+
+/// Main Building Light ///
+
+pointLightSign.color.set('rgb(255, 255, 255)');
+pointLightSign.castShadow = true;
+
+pointLightSign.intensity = 10;
+pointLightSign.distance = 15;
+pointLightSign.position.set(6.34, 1.3, 4.2);
+
+scene.add(pointLightSign);
+
+// Light Indicator //
+const sphereSign = new THREE.SphereGeometry(.02, 16, 16);
+const sphereMaterialSign = new THREE.MeshStandardMaterial({
+	color: 'rgb(255, 255, 255)',
+	emissive: 'rgb(255, 255, 255)', 
+})
+
+const signTargtet = new THREE.Mesh(sphereSign, sphereMaterialSign);
+scene.add(signTargtet);
+/////////////////////////////////////////////////
 
 //// 711 ////
 const loader13 = new GLTFLoader();
@@ -511,8 +540,8 @@ scene.add(sphereThree);
 //////
 
 // On click section
-const clickableObjectNames = ['ClickableSphere', 'ClickableSphere2', 'ClickableSphere3', 'CentralCube', 'mainBuildingFront', 'Bar Sign', 'Top Sign', '711', 'Vending White', 'Vending Red', 'Lamp One', 'Lamp Two'];
-const switchesToggle = [switches1, switches2, switches3, switches4, mainBuildingSwitch, barSignSwitch, topSignSwitch, seven11Switch, vendingWhiteSwitch, vendingRedSwitch, lampSwitch1, lampSwitch2];
+const clickableObjectNames = ['ClickableSphere', 'ClickableSphere2', 'ClickableSphere3', 'CentralCube', 'mainBuildingFront', 'Bar Sign', 'Top Sign', '711', 'Vending White', 'Vending Red', 'Lamp One', 'Lamp Two', 'Sign'];
+const switchesToggle = [switches1, switches2, switches3, switches4, mainBuildingSwitch, barSignSwitch, topSignSwitch, seven11Switch, vendingWhiteSwitch, vendingRedSwitch, lampSwitch1, lampSwitch2, signSwitch];
 
 function onMouseClick(event) {
   
@@ -789,6 +818,32 @@ if (switchesToggle[11]) {
 		});
 	}
 }
+
+// Street Sign//
+if (switchesToggle[12]) {
+	pointLightSign.intensity = 4;
+	if (sign) {
+		sign.traverse(function (child) {
+			if (child.isMesh) {
+				if (child.material.emissive !== undefined) {
+					child.material.emissiveIntensity = 1; 
+				}
+			}
+		});
+	}
+} else {
+	pointLightSign.intensity = 0;
+	if (sign) {
+		sign.traverse(function (child) {
+			if (child.isMesh) {
+				if (child.material.emissive !== undefined) {
+					child.material.emissiveIntensity = 0; 
+				}
+			}
+		});
+	}
+}
+
 
 	composer.render(renderer);
 	// renderer.render(scene, camera);

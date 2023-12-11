@@ -871,14 +871,14 @@ animate ();
 function showOverlay() {
 	const overlay = document.getElementById('overlay');
 	overlay.classList.add('slideIn');
-	console.log('please');
+	overlay.classList.remove('slideOut');
   }
   
   // Function to hide the overlay with slide-out animation
   function hideOverlay() {
 	const overlay = document.getElementById('overlay');
-	overlay.classList.remove('slideIn');
 	overlay.classList.add('slideOut');
+	overlay.classList.remove('slideIn');
   }
   
   // Adding event listeners

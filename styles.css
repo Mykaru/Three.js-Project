@@ -5,12 +5,13 @@ body {
 
 #overlay {
     position: fixed;
-    bottom: -100%; /* Start off-screen */
     left: 0;
     width: 100%;
+    height: 50%;
     background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
-    transition: bottom 0.5s ease-in-out;
+    transition:1.5s ease-in-out;
   }
+
   
   #content {
     padding: 20px;
@@ -22,13 +23,15 @@ body {
     top: 10px;
     right: 10px;
     cursor: pointer;
+    
   }
   
   /* Animation for the slide-in and slide-out effect */
   .slideIn {
     bottom: 0;
+    
   }
   
   .slideOut {
-    bottom: -100%;
+    bottom: -60%;
   }

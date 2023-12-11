@@ -152,28 +152,7 @@ spotLight.distance = 200;
 
 
 
-///// Green Emission Sphere //////
-const pointLight2 = new THREE.PointLight();
-pointLight2.color.set('rgb(20, 255 ,10)');
-pointLight2.castShadow = true;
 
-pointLight2.intensity = 20;
-pointLight2.distance = 15;
-
-scene.add(pointLight2);
-
-// Sphere Mesh //
-const sphere2 = new THREE.SphereGeometry(.3, 16, 16);
-const sphere2Material = new THREE.MeshStandardMaterial({
-	color: 'rgb(0, 255, 0)',
-	emissive: 'rgb(100, 255, 100)', 
-})
-
-const sphereTwo = new THREE.Mesh(sphere2, sphere2Material);
-sphereTwo.position.set(0, 4, 8);
-sphereTwo.name = 'ClickableSphere2'
-scene.add(sphereTwo);
-//////
 
 ///// Blue Emission Sphere //////
 const pointLight3 = new THREE.PointLight();
@@ -250,15 +229,17 @@ loader3.load('assets/main_ac/ac_unit.gltf', function (gltf) {
 	scene.add(mainAC);
 });
 
-//// Main Building Front Emitter ////
+//// Main Building Bar Sign ////
+let signBar;
 const loader4 = new GLTFLoader();
 loader4.load('assets/building_sign_bar/bar_sign.gltf', function (gltf) {
-	const signBar = gltf.scene;
+	signBar = gltf.scene;
 	scene.add(signBar);
 
 	signBar.traverse(function (child) {
 		if (child.isMesh) {
 			child.castShadow = true;
+			child.name = 'Bar Sign'
 		  	child.receiveShadow = true;
 			if (child.material.emissive !== undefined) {
 				child.material.emissiveIntensity = 1.5; 
@@ -266,6 +247,31 @@ loader4.load('assets/building_sign_bar/bar_sign.gltf', function (gltf) {
 		}
 	});
 });
+
+let barSignSwitch = true
+
+///// Green Emission Sphere //////
+const pointLight2 = new THREE.PointLight();
+pointLight2.color.set('rgb(255, 140 ,40)');
+pointLight2.castShadow = true;
+
+pointLight2.intensity = 20;
+pointLight2.distance = 15;
+
+scene.add(pointLight2);
+
+// Sphere Mesh //
+const sphere2 = new THREE.SphereGeometry(.2, 16, 16);
+const sphere2Material = new THREE.MeshStandardMaterial({
+	color: 'rgb(255, 170, 0)',
+	emissive: 'rgb(255, 170, 0)', 
+})
+
+const sphereTwo = new THREE.Mesh(sphere2, sphere2Material);
+sphereTwo.position.set(3, 4.85, 1.5);
+sphereTwo.name = 'ClickableSphere2'
+scene.add(sphereTwo);
+////////////////////////////////////
 
 //// Main Building Rain Cover ////
 const loader5 = new GLTFLoader();
@@ -282,7 +288,6 @@ loader6.load('assets/main_building/main_building.gltf', function (gltf) {
     scene.add(building);
 	
 	building.position.y = -0.1
-	building.name = 'mainBuildingFront';
 
     building.traverse(function (child) {
         if (child.isMesh) {
@@ -445,8 +450,8 @@ loader12.load('assets/sign1/sign1.gltf', function (gltf) {
   
 
 // On click section
-const clickableObjectNames = ['ClickableSphere', 'ClickableSphere2', 'ClickableSphere3', 'CentralCube', 'mainBuildingFront'];
-const switchesToggle = [switches1, switches2, switches3, switches4, mainBuildingSwitch];
+const clickableObjectNames = ['ClickableSphere', 'ClickableSphere2', 'ClickableSphere3', 'CentralCube', 'mainBuildingFront', 'Bar Sign'];
+const switchesToggle = [switches1, switches2, switches3, switches4, mainBuildingSwitch, barSignSwitch];
 
 function onMouseClick(event) {
   
@@ -464,10 +469,10 @@ function onMouseClick(event) {
     
     for (let i = 0; i < clickableObjectNames.length; i++) {
       if (clickedObject.name === clickableObjectNames[i]) {
-        console.log(`Sphere ${i + 1} clicked!`);
+        console.log(`Object ${i + 1} clicked!`);
         switchesToggle[i] = !switchesToggle[i];
        
-		console.log(`Value of switchesToggle[${i}]:`, switchesToggle[4]);
+		console.log(`Value of switchesToggle[${i}]:`, switchesToggle[5]);
            
         break;
       }
@@ -557,12 +562,28 @@ function animate() {
 	
 
 	// Point Two //
-	if (switchesToggle[1]) {
-		pointLight2.intensity = (flickeringIntensity2 * 2) + 9;
-		sphereTwo.material.emissiveIntensity = flickeringIntensity2;
+	if (switchesToggle[5]) {
+		pointLight2.intensity =  9;
+		if (signBar) {
+			signBar.traverse(function (child) {
+				if (child.isMesh) {
+					if (child.material.emissive !== undefined) {
+						child.material.emissiveIntensity = 1.2; 
+					}
+				}
+			});
+		}
 	} else {
 		pointLight2.intensity = 0;
-		sphereTwo.material.emissiveIntensity = 0;
+		if (signBar) {
+			signBar.traverse(function (child) {
+				if (child.isMesh) {
+					if (child.material.emissive !== undefined) {
+						child.material.emissiveIntensity = 0; 
+					}
+				}
+			});
+		}
 	}
 	pointLight2.position.copy(sphereTwo.position);
 	

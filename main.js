@@ -13,8 +13,9 @@ let camera, scene, renderer;
 
 // Camera
 camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.y = 7 * Math.tan( Math.PI / 6 );
-camera.position.z = 9;
+const cameraPosition = new THREE.Vector3(0, 5, 16);
+camera.position.copy(cameraPosition);
+
 
 // Scene 
 scene = new THREE.Scene();
@@ -25,10 +26,11 @@ renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 const controls = new OrbitControls( camera, renderer.domElement );
 controls.minDistance = 3.5;
-controls.maxDistance = 20;
+controls.maxDistance = 30;
 controls.enableDamping = true;
 controls.dampingFactor = .06;
-controls.maxPolarAngle = Math.PI / 2.2;
+controls.maxPolarAngle = Math.PI / 1.7;
+controls.target.y = 5;
 
 
 const renderScene = new RenderPass(scene, camera);
@@ -277,21 +279,38 @@ loader.load(
 
 	const loader4 = new GLTFLoader();
 	loader4.load('assets/building_sign_bar/bar_sign.gltf', function (gltf) {
-		const mainAC = gltf.scene;
-		scene.add(mainAC);
+		const signBar = gltf.scene;
+		scene.add(signBar);
+
+		signBar.traverse(function (child) {
+			if (child.isMesh) {
+				if (child.material.emissive !== undefined) {
+					child.material.emissiveIntensity = 1.5; 
+				}
+			}
+		});
 	});
 
 	const loader5 = new GLTFLoader();
 	loader5.load('assets/rain_cover/rain_cover.gltf', function (gltf) {
-		const mainAC = gltf.scene;
-		scene.add(mainAC);
+		const rainCover = gltf.scene;
+		scene.add(rainCover);
 	})
 
 	const loader6 = new GLTFLoader();
-	loader6.load('assets/main_building/main_building.gltf', function (gltf) {
-		const mainAC = gltf.scene;
-		scene.add(mainAC);
-	});
+
+loader6.load('assets/main_building/main_building.gltf', function (gltf) {
+    const building = gltf.scene;
+    scene.add(building);
+
+    building.traverse(function (child) {
+        if (child.isMesh) {
+            if (child.material.emissive !== undefined) {
+                child.material.emissiveIntensity = 1.2; 
+            }
+        }
+    });
+});
 
 
   

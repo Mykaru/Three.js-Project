@@ -108,7 +108,7 @@ fontLoader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
 } );
 
 // Ambient Light 
-const ambientLight = new THREE.AmbientLight('rgb(100,100,100)', 1);
+const ambientLight = new THREE.AmbientLight('rgb(100,100,100)', .05);
 scene.add(ambientLight);
 
 // Directional Light 
@@ -116,30 +116,6 @@ const directionalLight = new THREE.DirectionalLight(0xffffff, 0);
 directionalLight.position.set(5, 5, 5);
 directionalLight.castShadow = true;
 scene.add(directionalLight);
-
-// Spot Light
-const spotLight = new THREE.SpotLight(0x0000ff); 
-spotLight.position.set(0, 5, 0); 
-spotLight.target.position.set(0, 0, 0); 
-spotLight.castShadow = true;
-
-spotLight.intensity = 5;
-spotLight.angle = Math.PI / 4; 
-spotLight.penumbra = 0.1; 
-spotLight.decay = 1; 
-spotLight.distance = 200; 
-
-// scene.add(spotLight);
-// scene.add(spotLight.target);
-
-
-
-
-
-
-
-
-
 
 // Fog 
 scene.fog = new THREE.Fog( 'rgb(8,0,22)', 10, 50 );
@@ -340,6 +316,21 @@ loader7.load('assets/street_lights/street_lights.gltf', function (gltf) {
     });
 });
 
+// Spot Light
+const spotLight = new THREE.SpotLight('rgb(230, 200, 100)'); 
+spotLight.position.set(-6.5, 5.3, 3.5); 
+spotLight.target.position.set(-6.5, 0, 3.5); 
+spotLight.castShadow = true;
+
+spotLight.intensity = 5;
+spotLight.angle = Math.PI / 4; 
+spotLight.penumbra = 0.1; 
+spotLight.decay = 1; 
+spotLight.distance = 200; 
+
+scene.add(spotLight);
+scene.add(spotLight.target);
+
 //// Street Light Two ////
 const loader71 = new GLTFLoader();
 loader71.load('assets/street_lights2/street_lights2.gltf', function (gltf) {
@@ -357,6 +348,21 @@ loader71.load('assets/street_lights2/street_lights2.gltf', function (gltf) {
         }
     });
 });
+
+// Spot Light 2
+const spotLight2 = new THREE.SpotLight('rgb(230, 200, 100)'); 
+spotLight2.position.set(9.5, 5.3, 3.5); 
+spotLight2.target.position.set(9.4, 0, 3.5); 
+spotLight2.castShadow = true;
+
+spotLight2.intensity = 5;
+spotLight2.angle = Math.PI / 4; 
+spotLight2.penumbra = 0.1; 
+spotLight2.decay = 1; 
+spotLight2.distance = 200; 
+
+scene.add(spotLight2);
+scene.add(spotLight2.target);
 
 //// Vending Machine White ////
 const loader8 = new GLTFLoader();
@@ -581,7 +587,7 @@ function animate() {
 			building.traverse(function (child) {
 				if (child.isMesh) {
 					if (child.material.emissive !== undefined) {
-						child.material.emissiveIntensity = 1.2; 
+						child.material.emissiveIntensity = 1; 
 					}
 				}
 			});
@@ -610,7 +616,7 @@ function animate() {
 			signBar.traverse(function (child) {
 				if (child.isMesh) {
 					if (child.material.emissive !== undefined) {
-						child.material.emissiveIntensity = 1.2; 
+						child.material.emissiveIntensity = 1; 
 					}
 				}
 			});
@@ -637,7 +643,7 @@ function animate() {
 			seven11.traverse(function (child) {
 				if (child.isMesh) {
 					if (child.material.emissive !== undefined) {
-						child.material.emissiveIntensity = .9; 
+						child.material.emissiveIntensity = .7; 
 					}
 				}
 			});
@@ -663,7 +669,7 @@ function animate() {
 			topSign.traverse(function (child) {
 				if (child.isMesh) {
 					if (child.material.emissive !== undefined) {
-						child.material.emissiveIntensity = 1.2; 
+						child.material.emissiveIntensity = 1; 
 					}
 				}
 			});
@@ -687,7 +693,7 @@ function animate() {
 			vendingWhite.traverse(function (child) {
 				if (child.isMesh) {
 					if (child.material.emissive !== undefined) {
-						child.material.emissiveIntensity = 1.2; 
+						child.material.emissiveIntensity = 1; 
 					}
 				}
 			});
@@ -710,7 +716,7 @@ function animate() {
 			vendingRed.traverse(function (child) {
 				if (child.isMesh) {
 					if (child.material.emissive !== undefined) {
-						child.material.emissiveIntensity = 1.2; 
+						child.material.emissiveIntensity = 1; 
 					}
 				}
 			});
@@ -726,6 +732,8 @@ function animate() {
 			});
 		}
 	}
+
+
 
 	composer.render(renderer);
 	// renderer.render(scene, camera);

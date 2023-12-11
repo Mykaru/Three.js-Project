@@ -461,6 +461,25 @@ loader12.load('assets/sign1/sign1.gltf', function (gltf) {
     });
 })
 
+//// 711 ////
+const loader13 = new GLTFLoader();
+let seven11;
+loader13.load('assets/711/711.gltf', function (gltf) {
+	const seven11 = gltf.scene;
+	scene.add(seven11);
+
+	seven11.traverse(function (child) {
+        if (child.isMesh) {
+			child.castShadow = true;
+		  	child.receiveShadow = true;
+            if (child.material.emissive !== undefined) {
+                child.material.emissiveIntensity = .5; 
+            }
+        }
+    });
+})
+
+
 
 
   

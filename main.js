@@ -19,7 +19,7 @@ camera.position.copy(cameraPosition);
 
 // Scene 
 scene = new THREE.Scene();
-scene.background = new THREE.Color('rgb(10,0,32)');
+scene.background = new THREE.Color('rgb(8,0,22)');
 			
 renderer = new THREE.WebGLRenderer( { alpha: true } );
 renderer.setSize( window.innerWidth, window.innerHeight );
@@ -63,7 +63,7 @@ let switches3 = true;
 let switches4 = true;
 
 // Plane
-const geometry = new THREE.CircleGeometry(35, 32);
+const geometry = new THREE.CircleGeometry(60, 32);
 const material = new THREE.MeshStandardMaterial({ color: 'rgb(50,50,30)' });
 const plane = new THREE.Mesh(geometry, material);
 plane.receiveShadow = true;
@@ -104,7 +104,7 @@ fontLoader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
 	const textMaterial = new THREE.MeshStandardMaterial;
 	const textMesh = new THREE.Mesh(textLine1, textMaterial)
 	textMesh.position.x = 1;
-	textMesh.position.z = 4;
+	textMesh.position.z = 4+8;
 	textMesh.rotation.x = (-Math.PI / 2);
 	scene.add(textMesh);
 
@@ -119,7 +119,7 @@ fontLoader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
 	const textMaterial2 = new THREE.MeshStandardMaterial;
 	const textMesh2 = new THREE.Mesh(textLine2, textMaterial2)
 	textMesh2.position.x = 1;
-	textMesh2.position.z = 4.7;
+	textMesh2.position.z = 4.7+8;
 	textMesh2.rotation.x = (-Math.PI / 2);
 	scene.add(textMesh2);
 } );
@@ -230,7 +230,7 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 // Fog 
-scene.fog = new THREE.Fog( 'rgb(10,0,32)', 10, 27 );
+scene.fog = new THREE.Fog( 'rgb(8,0,22)', 10, 50 );
 
 // GLFT Loaders
 const loader = new GLTFLoader();
@@ -284,6 +284,8 @@ loader4.load('assets/building_sign_bar/bar_sign.gltf', function (gltf) {
 
 	signBar.traverse(function (child) {
 		if (child.isMesh) {
+			child.castShadow = true;
+		  	child.receiveShadow = true;
 			if (child.material.emissive !== undefined) {
 				child.material.emissiveIntensity = 1.5; 
 			}
@@ -304,6 +306,8 @@ loader6.load('assets/main_building/main_building.gltf', function (gltf) {
 
     building.traverse(function (child) {
         if (child.isMesh) {
+			child.castShadow = true;
+		  	child.receiveShadow = true;
             if (child.material.emissive !== undefined) {
                 child.material.emissiveIntensity = 1.2; 
             }
@@ -319,6 +323,8 @@ loader7.load('assets/street_lights/street_lights.gltf', function (gltf) {
 
     streetLights.traverse(function (child) {
         if (child.isMesh) {
+			child.castShadow = true;
+		  	child.receiveShadow = true;
             if (child.material.emissive !== undefined) {
                 child.material.emissiveIntensity = 1.2; 
             }
@@ -333,6 +339,8 @@ loader71.load('assets/street_lights2/street_lights2.gltf', function (gltf) {
 
     streetLights2.traverse(function (child) {
         if (child.isMesh) {
+			child.castShadow = true;
+		  	child.receiveShadow = true;
             if (child.material.emissive !== undefined) {
                 child.material.emissiveIntensity = 1.2; 
             }
@@ -344,18 +352,65 @@ const loader8 = new GLTFLoader();
 loader8.load('assets/Vending1/street_lights.gltf', function (gltf) {
 	const vending1 = gltf.scene;
 	scene.add(vending1);
+
+	vending1.traverse((child) => {
+		if (child.isMesh) {
+		  // Recalculate normals
+		  child.geometry.computeVertexNormals();
+  
+		  child.castShadow = true;
+		  child.receiveShadow = true;
+		}
+	  });
+  
 })
 
 const loader9 = new GLTFLoader();
 loader9.load('assets/vending2/vending2.gltf', function (gltf) {
 	const vending2 = gltf.scene;
 	scene.add(vending2);
+
+	vending2.traverse((child) => {
+		if (child.isMesh) {
+		  // Recalculate normals
+		  child.geometry.computeVertexNormals();
+  
+		  child.castShadow = true;
+		  child.receiveShadow = true;
+		}
+	  });
 })
 
 const loader10 = new GLTFLoader();
 loader10.load('assets/beer_crates/beer_crates.gltf', function (gltf) {
 	const beer = gltf.scene;
 	scene.add(beer);
+
+	beer.traverse((child) => {
+		if (child.isMesh) {
+		  // Recalculate normals
+		  child.geometry.computeVertexNormals();
+  
+		  child.castShadow = true;
+		  child.receiveShadow = true;
+		}
+	  });
+})
+
+const loader11 = new GLTFLoader();
+loader11.load('assets/ground/ground.gltf', function (gltf) {
+	const ground = gltf.scene;
+	scene.add(ground);
+
+	ground.traverse((child) => {
+		if (child.isMesh) {
+		  // Recalculate normals
+		  child.geometry.computeVertexNormals();
+  
+		  child.castShadow = true;
+		  child.receiveShadow = true;
+		}
+	  });
 })
 
 

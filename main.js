@@ -8,7 +8,7 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 		
-
+console.log(THREE.REVISION)
 let camera, scene, renderer;
 
 // Camera
@@ -81,7 +81,7 @@ fontLoader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
 	const textLine1 = new TextGeometry( 'Mykal Coleman', {
 		font: font,
 		size: 0.6,
-		height: .075,
+		depth: .075,
 		
 	} );
 
@@ -96,7 +96,7 @@ fontLoader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
 	const textLine2 = new TextGeometry( 'Click the lights!\nDescription', {
 		font: font,
 		size: 0.4,
-		height: .05,
+		depth: .05,
 		
 	} );
 
